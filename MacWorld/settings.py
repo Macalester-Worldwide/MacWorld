@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import os.path
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -27,7 +28,10 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
+TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'), # foward slashes in case of windows
+)
+
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -85,3 +89,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
+
+# Django-userena
+ANONYMOUS_USER_ID = -1
+AUTH_PROFILE_MODULE = 'accounts.MyProfile'
+LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+LOGIN_URL = '/accounts/signin/'
+LOGOUT_URL = '/accounts/signout/'
