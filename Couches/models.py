@@ -7,20 +7,25 @@ from django.core.validators import RegexValidator
 
 
 class UserProfile(UserenaBaseProfile):
-    user = models.OneToOneField(User,
-                                unique=True,
-                                verbose_name=_('user'),
-                                related_name='my_profile')
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.CharField(max_length=50, validators=[validate_email])
-    description = models.CharField(max_length=300)
-    picture = models.FileField(upload_to='.')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
+	user = models.OneToOneField(User,
+								unique=True,
+								verbose_name=_('user'),
+								related_name='my_profile')
+
+	first_name = models.CharField(max_length=30)
+	last_name = models.CharField(max_length=30)
+	description = models.CharField(max_length=300, blank=True)
+	contact_information = models.CharField(max_length=300, blank=True) # extra contact information that the user wishes to include
+
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+	
 class Location(models.Model):
 	user = models.ForeignKey(UserProfile)
 	available = models.BooleanField() # Is this location available to couchsurf?
+	
 	latitude = models.CharField(max_length=30, validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
 	longitude = models.CharField(max_length=30, validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
+
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
