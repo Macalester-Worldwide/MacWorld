@@ -6,9 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 	url(r'^admin/', include(admin.site.urls)),
-	(r'^Couches/', include('userena.urls')),
-	(r'^messages/', include('userena.contrib.umessages.urls')),
-	(r'^Couches/signup/$',
+    (r'^Couches/signup/$',
 	'userena.views.signup',
 	{'signup_form': SignupFormExtra}),
+	(r'^Couches/', include('userena.urls')),
+	(r'^messages/', include('userena.contrib.umessages.urls')),
 )
