@@ -13,7 +13,7 @@ class SignupFormExtra(SignupForm):
 	description = forms.CharField(label=_(u'Description'),
 								 max_length=300,
 								 required=False)
-	contact_information = forms.CharField(label=_(u'Description'),
+	contact_information = forms.CharField(label=_(u'Contact Information'),
 								 max_length=300,
 								 required=False)
 	latitude = forms.CharField(label=_(u'Latitude'),
@@ -22,14 +22,6 @@ class SignupFormExtra(SignupForm):
 	longitude = forms.CharField(label=_(u'Longitude'),
 								 max_length=30,
 								 required=False)
-
-	def __init__(self, *args, **kw):
-		super(SignupFormExtra, self).__init__(*args, **kw)
-		# Put the first and last name at the top
-		new_order = self.fields.keyOrder[:-2]
-		new_order.insert(0, 'first_name')
-		new_order.insert(1, 'last_name')
-		self.fields.keyOrder = new_order
 
 	def save(self):
 		# First save the parent form and get the user.
