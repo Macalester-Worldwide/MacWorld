@@ -21,7 +21,7 @@ class UserProfile(UserenaBaseProfile):
 	updated_at = models.DateTimeField(auto_now=True)
 	
 class Location(models.Model):
-	user = models.ForeignKey(UserProfile)
+	user = models.ForeignKey(User)
 	available = models.BooleanField() # Is this location available to couchsurf?
 	
 	latitude = models.CharField(max_length=30, validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator

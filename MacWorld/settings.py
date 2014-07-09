@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'userena',
     'guardian',
     'easy_thumbnails',
@@ -105,3 +106,6 @@ AUTH_PROFILE_MODULE = 'Couches.UserProfile'
 LOGIN_REDIRECT_URL = '/Couches/%(username)s/'
 LOGIN_URL = '/Couches/signin/'
 LOGOUT_URL = '/Couches/signout/'
+
+# sites framework
+SITE_ID = 1

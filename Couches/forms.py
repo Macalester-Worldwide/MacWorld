@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from userena.forms import SignupForm
+from Couches.models import Location
 
 # Code adapted from: http://django-userena.readthedocs.org/en/latest/faq.html#how-do-i-add-extra-fields-to-forms
 class SignupFormExtra(SignupForm):
