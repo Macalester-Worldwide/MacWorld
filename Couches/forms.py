@@ -10,9 +10,6 @@ class SignupFormExtra(SignupForm):
 	last_name = forms.CharField(label=_(u'Last name'),
 								max_length=30,
 								required=True)
-	primary_location = forms.CharField(label=_(u'Host location'),
-								max_length=30,
-								required=True)
 	description = forms.CharField(label=_(u'Description'),
 								 max_length=300,
 								 required=False)
