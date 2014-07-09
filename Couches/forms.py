@@ -33,10 +33,10 @@ class SignupFormExtra(SignupForm):
 		new_user.contact_information = self.cleaned_data['contact_information']
 		new_user.save()
 
-		user_location = Location()
-		user_location.available = True
-		user_location.user = new_user
-		user_location.latitude = self.cleaned_data['latitude']
-		user_location.longitude = self.cleaned_data['longitude']
+		Location.objects.create(available=True, 
+								user=new_user, 
+								latitude=self.cleaned_data['latitude'], 
+								longitude=self.cleaned_data['longitude'])
+		
 
 		return new_user

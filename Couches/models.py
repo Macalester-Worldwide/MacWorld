@@ -19,6 +19,9 @@ class UserProfile(UserenaBaseProfile):
 
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
+
+	def __unicode__(self):
+        return u'%s %s' % (self.first_name, self.last_name)
 	
 class Location(models.Model):
 	user = models.ForeignKey(User)
