@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{# TODO: TAKE PERMISSIONS INTO ACCOUNT #}
+{% block title %}Profile - {{ user }}{% endblock %}
+{% block content %}
+    <h2>{{ user }}</h2>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>{{ user }}</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>{{ user.description }}</td>
+        </tr>
+        {% if user.contact_info %}
+        <tr>
+            <td>Contact Info</td>
+            <td>{{ user.contact_info }}</td>
+        </tr>
+        {% endif %}
+    </table>
+{% endblock %}
