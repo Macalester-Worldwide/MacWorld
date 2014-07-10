@@ -14,7 +14,7 @@ class UserProfile(UserenaBaseProfile):
 
     description = models.CharField(max_length=300, blank=True)
     contact_information = models.CharField(max_length=300, blank=True) # extra contact information that the user wishes to include
-    graduation_year = models.IntegerField(null=True)
+    graduation_year = models.CharField(max_length=300, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
