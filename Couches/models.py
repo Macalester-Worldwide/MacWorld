@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from userena.models import UserenaBaseProfile
-from django.core.validators import validate_email
 from django.core.validators import RegexValidator
 
 
@@ -21,7 +20,8 @@ class UserProfile(UserenaBaseProfile):
 
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
-    
+
+
 class Location(models.Model):
     user = models.ForeignKey(User)
     available = models.BooleanField() # Is this location available to couchsurf?
