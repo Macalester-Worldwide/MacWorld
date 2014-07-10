@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+    <input type="text" value="Current Location">
+    <img src="" alt="map of nearby couches">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+        </tr>
+        {% for user in potential_users %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.get_location_name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
