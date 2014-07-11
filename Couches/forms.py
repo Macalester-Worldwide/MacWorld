@@ -50,7 +50,7 @@ class EditProfileFormExtra(EditProfileForm):
                                       required=False,
                                       validators=[RegexValidator(regex='^\d{4}$'), ])
 
-    def save(self): #TODO: make the signature of this method match the one it overrides
+    def save(self, force_insert=False, force_update=False, commit=True):
         profile = super(EditProfileFormExtra, self).save()
         profile.description = self.cleaned_data['description']
         profile.contact_information = self.cleaned_data['contact_information']
