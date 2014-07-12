@@ -16,6 +16,6 @@ urlpatterns = patterns('',
     url(r'^Couches/(?P<username>[\.\w-]+)/$',
     'userena.views.profile_detail',
     {'template_name':'profile_detail.html'}),
-    (r'^Couches/', include('userena.urls')),
-    (r'^messages/', include('userena.contrib.umessages.urls')),
+    url(r'^Couches/', include('userena.urls')),
+    url(r'^messages/', include('userena.contrib.umessages.urls')),
 )

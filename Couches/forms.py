@@ -16,10 +16,12 @@ class SignupFormExtra(SignupForm):
                                 required=True)
     latitude = forms.CharField(label=_(u'Latitude'),
                                max_length=30,
-                               required=False)
+                               required=False,
+                               validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),])
     longitude = forms.CharField(label=_(u'Longitude'),
                                 max_length=30,
-                                required=False)
+                                required=False,
+                                validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),])
 
     def save(self):
         # First save the parent form and get the user.
@@ -39,20 +41,36 @@ class SignupFormExtra(SignupForm):
 class EditProfileFormExtra(EditProfileForm):
     description = forms.CharField(label=_(u'Description'),
                                   max_length=300,
-                                  required=True,
+                                  required=False,
                                   widget=forms.Textarea)
     contact_information = forms.CharField(label=_(u'Contact Information'),
                                           max_length=300,
-                                          required=True,
+                                          required=False,
                                           widget=forms.Textarea)
-    graduation_year = forms.CharField(label=_(u'Longitude'),
+    graduation_year = forms.CharField(label=_(u'Graduation Year'),
                                       max_length=4,
                                       required=False,
                                       validators=[RegexValidator(regex='^\d{4}$'), ])
+    # BUG: the two fields below do not appear on the form
+    latitude = forms.CharField(label=_(u'Latitude'),
+                               max_length=30,
+                               required=False,
+                               validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'), ])
+    longitude = forms.CharField(label=_(u'Longitude'),
+                                max_length=30,
+                                required=False,
+                                validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'), ])
 
     def save(self, force_insert=False, force_update=False, commit=True):
         profile = super(EditProfileFormExtra, self).save()
         profile.description = self.cleaned_data['description']
         profile.contact_information = self.cleaned_data['contact_information']
         profile.graduation_year = self.cleaned_data['graduation_year']
+
+        location = Location.objects.get(user = profile.user)
+        if(location):
+          location.latitude = self.cleaned_data['latitude']
+          location.longitude = self.cleaned_data['longitude']
+          location.save()
+
         return profile
