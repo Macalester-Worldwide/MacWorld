@@ -6,6 +6,9 @@
 {% block content_title %}<h2>{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h2>{% endblock %}
 
 {% block content %}
+   <div>{% comment %}For debugging purposes only.{% endcomment %}
+    <h1>Current user: {{ user }}</h1>
+   </div>
    <div class="white-box">
     {% block profile_navigation %}
 
