@@ -11,6 +11,23 @@
 	</head>
 	<body>
 		<div class="row container">
+            <table>
+                {% if not user.is_authenticated %}
+                {% comment %} TODO: fix this. Try to use the LoginForm somehow {% endcomment %}
+                <form action="/login/" method="post">
+                    <tr>
+                        <td><input id="id_username" name="username" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td><input id="id_password" name="password" type="password"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Submit"></td>
+                    </tr>
+                    {% csrf_token %}
+                </form>
+                {% endif %}
+            </table>
 		    {% block content %}
 
 		    {% endblock %}
