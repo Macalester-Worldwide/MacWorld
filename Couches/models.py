@@ -1,35 +1,21 @@
-from django.db import models
+from django.db.models import Model, OneToOneField, IntegerField, TextField, ForeignKey, FloatField
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-from userena.models import UserenaBaseProfile
-from django.core.validators import RegexValidator
 
 
-class UserProfile(UserenaBaseProfile):
-    user = models.OneToOneField(User,
-                                unique=True,
-                                verbose_name=_('user'),
-                                related_name='my_profile')
+class UserProfile(Model):
+    user = OneToOneField(User, related_name='profile')
+    description = TextField(max_length=300, blank=True)
+    contact_information = TextField(max_length=300, blank=True)
+    graduation_year = IntegerField(null=True, blank=True)
 
-    first_name = models.TextField()
-    last_name = models.TextField()
-    description = models.CharField(max_length=300, blank=True)
-    contact_information = models.CharField(max_length=300, blank=True) # extra contact information that the user wishes to include
-    graduation_year = models.CharField(max_length=300, blank=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    def get_full_name(self):
+        self.user.get_full_name()
 
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return unicode(self.get_full_name())
 
 
-class Location(models.Model):
-    user = models.ForeignKey(User)
-    available = models.BooleanField() # Is this location available to couchsurf? TODO: what should the default be?
-    
-    latitude = models.CharField(max_length=30, validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
-    longitude = models.CharField(max_length=30, validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class Couch(Model):
+    owner = ForeignKey(UserProfile, related_name='couches')
+    lon = FloatField()
+    lat = FloatField()
