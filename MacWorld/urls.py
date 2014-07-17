@@ -1,4 +1,4 @@
-from Couches.views import LoginView
+from Couches.views import LoginView, HomeView
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
