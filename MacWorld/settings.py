@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates').replace('\\','/'), # foward slashes in case of windows
+    os.path.join(BASE_DIR, 'MacWorld/templates'),
 )
 
 
@@ -53,9 +54,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'userena',
     'guardian',
-    'easy_thumbnails',
     'Couches',
 )
 
@@ -69,7 +68,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'userena.backends.UserenaAuthenticationBackend',
     'guardian.backends.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -108,18 +106,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+ANONYMOUS_USER_ID = -1
+
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-
-# Django-userena
-ANONYMOUS_USER_ID = -1
-AUTH_PROFILE_MODULE = 'Couches.UserProfile'
-LOGIN_REDIRECT_URL = '/Couches/%(username)s/'
-LOGIN_URL = '/Couches/signin/'
-LOGOUT_URL = '/Couches/signout/'
 
 # sites framework
 SITE_ID = 1

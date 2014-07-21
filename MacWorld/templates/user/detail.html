@@ -1,0 +1,12 @@
+{% extends "skeleton.html" %}
+
+{% load i18n %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td>{% trans "Name" %}</td>
+            <td>{{ user.get_full_name }}</td>
+        </tr>
+    </table>
+{% endblock %}

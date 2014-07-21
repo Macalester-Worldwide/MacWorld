@@ -1,4 +1,15 @@
-from Couches.models import Couch
-from django.contrib import admin
+from Couches.models import CouchesProfile, Couch
+from django.contrib.admin import site, TabularInline, ModelAdmin
 
-admin.site.register([Couch])
+
+class CouchInline(TabularInline):
+    model = Couch
+
+
+class CouchesProfileAdmin(ModelAdmin):
+    inlines = [
+        CouchInline,
+    ]
+
+site.register(CouchesProfile, CouchesProfileAdmin)
+site.register(Couch)
