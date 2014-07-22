@@ -26,6 +26,7 @@
             {% else %}
             <p>{% trans "Current user: " %} <b>{{ user.get_full_name }}</b></p>
             <a href="{% url 'user-logout' %}">{% trans "Logout" %}</a>
+            <br>
             {% endif %}
             {% endblock %}
 

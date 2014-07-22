@@ -5,8 +5,11 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+
 <ul>
     <li><b>Apps</b></li>
-    <li><a href="{% url 'couches-home' %}">{% trans 'Couches' %}</a></li>
+    <ul>
+        <li><a href="{% url 'couches-home' %}">{% trans 'Couches' %}</a></li>
+    </ul>
 </ul>
 {% endblock %}
