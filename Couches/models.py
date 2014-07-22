@@ -16,7 +16,7 @@ class UserProfile(UserenaBaseProfile):
     description = models.CharField(max_length=300, blank=True)
     contact_information = models.CharField(max_length=300, blank=True) # extra contact information that the user wishes to include
     graduation_year = models.CharField(max_length=300, blank=True)
-
+    address = models.CharField(max_length=100, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -25,8 +25,8 @@ class UserProfile(UserenaBaseProfile):
 
 
 class Location(models.Model):
-    user = models.ForeignKey(User)
-    available = models.BooleanField() # Is this location available to couchsurf? TODO: what should the default be?
+    user = models.ForeignKey(User, related_name="locations")
+    available = models.BooleanField(default=True) # Is this location available to couchsurf
     
     latitude = models.CharField(max_length=30, validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
     longitude = models.CharField(max_length=30, validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator

@@ -39,27 +39,27 @@ class SignupFormExtra(SignupForm):
 
 
 class EditProfileFormExtra(EditProfileForm):
-    description = forms.CharField(label=_(u'Description'),
-                                  max_length=300,
+    description = forms.CharField(max_length=300,
                                   required=False,
                                   widget=forms.Textarea)
-    contact_information = forms.CharField(label=_(u'Contact Information'),
-                                          max_length=300,
+    contact_information = forms.CharField(max_length=300,
                                           required=False,
                                           widget=forms.Textarea)
-    graduation_year = forms.CharField(label=_(u'Graduation Year'),
-                                      max_length=4,
+    graduation_year = forms.CharField(max_length=4,
                                       required=False,
-                                      validators=[RegexValidator(regex='^\d{4}$'), ])
-    # BUG: the two fields below do not appear on the form
-    latitude = forms.CharField(label=_(u'Latitude'),
-                               max_length=30,
+                                      validators=[RegexValidator(regex='^\d{4}$'),])
+    address = forms.CharField(max_length=100,
+                              required=False,
+                              widget=forms.Textarea)
+    latitude = forms.CharField(max_length=30,
                                required=False,
-                               validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'), ])
-    longitude = forms.CharField(label=_(u'Longitude'),
-                                max_length=30,
+                               validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
+    longitude = forms.CharField(max_length=30,
                                 required=False,
-                                validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'), ])
+                                validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
+
+    def __init__(self, *args, **kw):
+        super(EditProfileForm, self).__init__(*args, **kw)
 
     def save(self, force_insert=False, force_update=False, commit=True):
         profile = super(EditProfileFormExtra, self).save()

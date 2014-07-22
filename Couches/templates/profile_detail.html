@@ -6,9 +6,14 @@
 {% block content_title %}<h2>{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h2>{% endblock %}
 
 {% block content %}
-   <div>{% comment %}For debugging purposes only.{% endcomment %}
-    <h1>Current user: {{ user }}</h1>
+
+   {% comment %}Show user for debugging purposes only.{% endcomment %}
+   <div>
+      <h1>Current user: {{ user }}</h1>
    </div>
+   {% comment %} End show user {% endcomment %}
+
+
    <div class="white-box">
     {% block profile_navigation %}
 
@@ -52,6 +57,15 @@
               <dt>{% trans "Contact_information" %}</dt>
               <dd>{{ profile.contact_information }}</dd>
             {% endif %}
+            {% if profile.user.locations %}
+              {% for loc in profile.user.locations.all %}
+                <dt>{% trans "Latitude" %}</dt>
+                <dd>{{ loc.latitude }}</dd>
+                <dt>{% trans "Longitude" %}</dt>
+                <dd>{{ loc.longitude }}</dd>
+              {% endfor %}
+            {% endif %}
+
           {% endblock %}
         </dl>
       {% endblock %}
