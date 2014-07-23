@@ -1,5 +1,6 @@
 from Couches.models import CouchesProfile, Couch
 from django.forms import ModelForm
+from django.forms.widgets import HiddenInput
 
 
 class CouchesProfileForm(ModelForm):
@@ -9,6 +10,7 @@ class CouchesProfileForm(ModelForm):
     class Meta:
         model = CouchesProfile
         fields = ['user', 'description', 'contact_information', 'graduation_year']
+        widgets = {'user': HiddenInput}
 
 
 class CouchForm(ModelForm):
