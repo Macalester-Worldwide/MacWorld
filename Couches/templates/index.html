@@ -1,12 +1,42 @@
-{% extends "base.html" %}
+{% extends "base_macworld.html" %}
 
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
-    <input type="text" value="Current Location">
-        {% for location in locations %}
-            {{ location.latitude }}
-            {{ location.longitude }}
-            {{ location.user }}
+
+<style type="text/css">
+    #map-canvas{
+    height: 400px;
+    width: 400px;
+	}
+</style>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
+</script>
+<script type="text/javascript">
+    function initialize() {
+        var mapOptions = {
+            center: new google.maps.LatLng(0, 0),
+            zoom: 1
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+                mapOptions);
+
+        {% for couch in couches %}
+        var couch{{ forloop.counter }} = new google.maps.Marker({
+            position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
+            map: map,
+            url: "Couches/{{ couch.user }}",
+            title:"{{ couch.user }}"
+        });
+
+        google.maps.event.addListener(couch{{ forloop.counter }}, 'click', function() {
+        	window.location.href = couch{{ forloop.counter }}.url;
+        });
+
         {% endfor %}
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<div id="map-canvas"></div>
 {% endblock %}
