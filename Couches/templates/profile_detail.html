@@ -49,6 +49,10 @@
               <dt>{% trans "Age" %}</dt>
               <dd>{{ profile.age }}</dd>
             {% endif %}
+            {% if profile.graduation_year %}
+              <dt>{% trans "Graduation Year" %}</dt>
+              <dd>{{ profile.graduation_year }}</dd>
+            {% endif %}
             {% if profile.description %}
               <dt>{% trans "Description" %}</dt>
               <dd>{{ profile.description }}</dd>
@@ -59,6 +63,8 @@
             {% endif %}
             {% if profile.user.locations %}
               {% for loc in profile.user.locations.all %}
+                <dt>{% trans "Address" %} </dt>
+                <dd>{{ loc.address }}</dd>
                 <dt>{% trans "Latitude" %}</dt>
                 <dd>{{ loc.latitude }}</dd>
                 <dt>{% trans "Longitude" %}</dt>

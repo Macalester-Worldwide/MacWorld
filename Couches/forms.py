@@ -8,18 +8,16 @@ from django.core.validators import RegexValidator
 
 # Code adapted from: http://django-userena.readthedocs.org/en/latest/faq.html#how-do-i-add-extra-fields-to-forms
 class SignupFormExtra(SignupForm):
-    first_name = forms.CharField(label=_(u'First name'),
-                                 max_length=30,
+    first_name = forms.CharField(max_length=30,
                                  required=True)
-    last_name = forms.CharField(label=_(u'Last name'),
-                                max_length=30,
+    last_name = forms.CharField(max_length=30,
                                 required=True)
-    latitude = forms.CharField(label=_(u'Latitude'),
-                               max_length=30,
+    address = forms.CharField(max_length=100,
+                              required=False)
+    latitude = forms.CharField(max_length=30,
                                required=False,
                                validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),])
-    longitude = forms.CharField(label=_(u'Longitude'),
-                                max_length=30,
+    longitude = forms.CharField(max_length=30,
                                 required=False,
                                 validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),])
 
@@ -33,7 +31,8 @@ class SignupFormExtra(SignupForm):
         Location.objects.create(available=True,
                                 user=new_user,
                                 latitude=self.cleaned_data['latitude'],
-                                longitude=self.cleaned_data['longitude'])
+                                longitude=self.cleaned_data['longitude'],
+                                address=self.cleaned_data['address'])
 
         return new_user
 
@@ -48,15 +47,6 @@ class EditProfileFormExtra(EditProfileForm):
     graduation_year = forms.CharField(max_length=4,
                                       required=False,
                                       validators=[RegexValidator(regex='^\d{4}$'),])
-    address = forms.CharField(max_length=100,
-                              required=False,
-                              widget=forms.Textarea)
-    latitude = forms.CharField(max_length=30,
-                               required=False,
-                               validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
-    longitude = forms.CharField(max_length=30,
-                                required=False,
-                                validators=[RegexValidator(regex='^[-+]?[0-9]*\.?[0-9]+$'),]) # floating point validator
 
     def __init__(self, *args, **kw):
         super(EditProfileForm, self).__init__(*args, **kw)
@@ -66,11 +56,5 @@ class EditProfileFormExtra(EditProfileForm):
         profile.description = self.cleaned_data['description']
         profile.contact_information = self.cleaned_data['contact_information']
         profile.graduation_year = self.cleaned_data['graduation_year']
-
-        location = Location.objects.get(user = profile.user)
-        if(location):
-          location.latitude = self.cleaned_data['latitude']
-          location.longitude = self.cleaned_data['longitude']
-          location.save()
 
         return profile
