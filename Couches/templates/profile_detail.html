@@ -61,14 +61,14 @@
               <dt>{% trans "Contact_information" %}</dt>
               <dd>{{ profile.contact_information }}</dd>
             {% endif %}
-            {% if profile.user.locations %}
-              {% for loc in profile.user.locations.all %}
+            {% if profile.user.couches %}
+              {% for couch in profile.user.couches.all %}
                 <dt>{% trans "Address" %} </dt>
-                <dd>{{ loc.address }}</dd>
+                <dd>{{ couch.address }}</dd>
                 <dt>{% trans "Latitude" %}</dt>
-                <dd>{{ loc.latitude }}</dd>
+                <dd>{{ couch.latitude }}</dd>
                 <dt>{% trans "Longitude" %}</dt>
-                <dd>{{ loc.longitude }}</dd>
+                <dd>{{ couch.longitude }}</dd>
               {% endfor %}
             {% endif %}
 

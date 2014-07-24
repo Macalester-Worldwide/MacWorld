@@ -1,8 +1,13 @@
 from Couches.models import Location
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+
+
+def index(request):
+    return render(request, 'index.html', {'couches' : Location.objects.all()})
 
 
 class LocationDetail(DetailView):

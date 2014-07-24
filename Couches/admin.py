@@ -1,6 +1,6 @@
-from Couches.models import Location
+from Couches.models import Couch
 from django.contrib import admin
 
 # Register your models here.
 
-admin.site.register(Location)
+admin.site.register(Couch)

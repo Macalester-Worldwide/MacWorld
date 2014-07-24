@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from userena.forms import SignupForm
 from userena.forms import EditProfileForm
-from Couches.models import Location
+from Couches.models import Couch
 from django.core.validators import RegexValidator
 
 
@@ -28,7 +28,7 @@ class SignupFormExtra(SignupForm):
         new_user.last_name = self.cleaned_data['last_name']
         new_user.save()
 
-        Location.objects.create(available=True,
+        Couch.objects.create(available=True,
                                 user=new_user,
                                 latitude=self.cleaned_data['latitude'],
                                 longitude=self.cleaned_data['longitude'],
