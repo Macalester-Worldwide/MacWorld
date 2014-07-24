@@ -106,6 +106,7 @@ EMAIL_PORT = 587
 ANONYMOUS_USER_ID = -1
 AUTH_PROFILE_MODULE = 'Couches.UserProfile'
 LOGIN_REDIRECT_URL = '/Couches/%(username)s/'
+USERENA_SIGNIN_REDIRECT_URL = '/Couches/%(username)s/'
 LOGIN_URL = '/Couches/signin/'
 LOGOUT_URL = '/Couches/signout/'
 

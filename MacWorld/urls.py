@@ -1,6 +1,9 @@
-from Couches.views import CouchDetail, CouchCreate, CouchUpdate, CouchDelete
-from django.conf.urls import patterns, include, url
+from django.conf.urls import *
+from django.contrib.auth import views as auth_views
+
 from django.contrib import admin
+
+from Couches.views import CouchDetail, CouchCreate, CouchUpdate, CouchDelete
 from Couches.forms import SignupFormExtra
 from Couches.forms import EditProfileFormExtra
 
@@ -10,6 +13,10 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^Couches/signup/$', 'userena.views.signup',
                            {'template_name': 'signup.html', 'signup_form': SignupFormExtra}),
+                       url(r'^Couches/signin/$', 'userena.views.signin',
+                           {'template_name': 'signin.html'}),
+                       url(r'^Couches/signout/$', 'userena.views.signout',
+                           {'template_name': 'index.html'}),
                        url(r'^Couches/(?P<username>[\.\w-]+)/edit/$', 'userena.views.profile_edit',
                            {'template_name': 'profile_form.html', 'edit_profile_form': EditProfileFormExtra}),
                        url(r'^Couches/(?P<username>[\.\w-]+)/$', 'userena.views.profile_detail',
