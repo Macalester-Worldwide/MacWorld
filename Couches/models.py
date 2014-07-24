@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse_lazy
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
@@ -33,3 +34,6 @@ class Couch(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse_lazy('couches-couch-detail', args=(self.id,))
