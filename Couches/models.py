@@ -36,4 +36,4 @@ class Couch(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse_lazy('couches-location-detail', args=(self.id,))
+        return reverse_lazy('couches-couch-detail', args=(self.id,))

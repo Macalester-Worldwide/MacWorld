@@ -1,18 +1,18 @@
-{% extends "base.html" %}
+{% extends "base_macworld.html" %}
 
 {% block content %}
 <table>
     <tr>
         <td>Address</td>
-        <td>{{ location.address }}</td>
+        <td>{{ couch.address }}</td>
     </tr>
     <tr>
         <td>Latitude</td>
-        <td>{{ location.latitude }}</td>
+        <td>{{ couch.latitude }}</td>
     </tr>
     <tr>
         <td>Longitude</td>
-        <td>{{ location.longitude }}</td>
+        <td>{{ couch.longitude }}</td>
     </tr>
 </table>
 {% endblock %}

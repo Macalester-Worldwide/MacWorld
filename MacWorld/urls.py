@@ -1,4 +1,4 @@
-from Couches.views import LocationUpdate, LocationCreate, LocationDelete, LocationDetail
+from Couches.views import CouchDetail, CouchCreate, CouchUpdate, CouchDelete
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from Couches.forms import SignupFormExtra
@@ -16,8 +16,8 @@ urlpatterns = patterns('',
                            {'template_name': 'profile_detail.html'}),
                        url(r'^Couches/', include('userena.urls')),
                        url(r'^messages/', include('userena.contrib.umessages.urls')),
-                       url(r'^location_detail/(?P<pk>\d+)/$', LocationDetail.as_view(), name='couches-location-detail'),
-                       url(r'^location_delete/(?P<pk>\d+)/$', LocationDelete.as_view(), name='couches-location-delete'),
-                       url(r'^location_update/(?P<pk>\d+)/$', LocationUpdate.as_view(), name='couches-location-update'),
-                       url(r'^location_create/$', LocationCreate.as_view(), name='couches-location-create'),
+                       url(r'^couch_detail/(?P<pk>\d+)/$', CouchDetail.as_view(), name='couches-couch-detail'),
+                       url(r'^couch_delete/(?P<pk>\d+)/$', CouchDelete.as_view(), name='couches-couch-delete'),
+                       url(r'^couch_update/(?P<pk>\d+)/$', CouchUpdate.as_view(), name='couches-couch-update'),
+                       url(r'^couch_create/$', CouchCreate.as_view(), name='couches-couch-create'),
 )
