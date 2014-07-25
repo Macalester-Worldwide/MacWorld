@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse_lazy
 from django.db.models import Model, OneToOneField, IntegerField, TextField, ForeignKey, FloatField, CharField
 from django.contrib.auth.models import User
 
@@ -8,11 +9,15 @@ class CouchesProfile(Model):
     contact_information = TextField(max_length=300, blank=True)
     graduation_year = IntegerField(null=True, blank=True)
 
+    def get_absolute_url(self):
+        return reverse_lazy('couches-profile-detail', kwargs={'username': self.user.username})
+
     def get_full_name(self):
         return self.user.get_full_name()
 
     def __unicode__(self):
-        return unicode(self.user.get_full_name())
+        full_name = self.user.get_full_name()
+        return unicode(full_name if full_name else self.user.username)
 
 
 class Couch(Model):
