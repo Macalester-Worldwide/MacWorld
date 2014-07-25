@@ -17,6 +17,13 @@
 
 	</head>
 	<body>
+		<div class="nav">
+			{% if user.is_authenticated %}
+				Welcome! {{ user }} <a href="{% url "signout" %}"> Sign out. </a> <a href="{% url "my_profile" user.username %}"> My profile </a>
+			{% else %}
+				Welcome, please <a href="{% url "signin" %}" > Sign in </a> or <a href="{% url "signup" %}"> Sign up </a>
+			{% endif %}
+		</div>
 		<div class="row container">
 		    {% block content %}
 

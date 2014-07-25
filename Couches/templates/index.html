@@ -4,6 +4,13 @@
 
 {% block content %}
 
+<div id="map-canvas"></div>
+<input id="search-address" type="text" />
+<input id="latitude" type="text" disabled="disabled" />
+<input id="longitude" type="text" disabled="disabled"/>
+<input id="address" type="text" disabled="disabled" />
+
+
 <style type="text/css">
     #map-canvas{
     height: 400px;
@@ -82,9 +89,4 @@
     google.maps.event.addDomListener(window, 'load', initialize);
 
 </script>
-<div id="map-canvas"></div>
-<input id="search-address" type="text" />
-<input id="latitude" type="text" disabled="disabled" />
-<input id="longitude" type="text" disabled="disabled"/>
-<input id="address" type="text" disabled="disabled" />
 {% endblock %}

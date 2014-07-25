@@ -7,7 +7,7 @@ from django.views.generic.detail import DetailView
 
 
 def index(request):
-    return render(request, 'index.html', {'couches': Couch.objects.all()})
+    return render(request, 'index.html', {'couches': Couch.objects.all() })
 
 
 class CouchDetail(DetailView):
