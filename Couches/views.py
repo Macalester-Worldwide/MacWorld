@@ -15,6 +15,11 @@ class CouchesHomeView(ListView):
     context_object_name = 'couches'
 
 
+class CouchCreateView(CreateView):
+    model = Couch
+    template_name = 'couch/edit.html'
+
+
 class ProfileByUsernameMixin:
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
