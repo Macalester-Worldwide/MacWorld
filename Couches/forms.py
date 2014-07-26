@@ -1,5 +1,6 @@
 from Couches.models import CouchesProfile, Couch
 from django.forms import ModelForm
+from django.forms.widgets import HiddenInput
 
 
 class CouchesProfileForm(ModelForm):
@@ -11,4 +12,5 @@ class CouchesProfileForm(ModelForm):
 class CouchForm(ModelForm):
     class Meta:
         model = Couch
-        fields = ['owner', 'lon', 'lat']
+        exclude = ['owner']
+        widgets = {'latitude': HiddenInput, 'longitude': HiddenInput, 'address': HiddenInput}
