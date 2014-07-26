@@ -2,19 +2,24 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
-	<head>
-	    <title>Macalester Worldwide network, travel with Macalester students. {% block title %}{% endblock %}</title>
+<head>
+    <title>Macalester Worldwide network, travel with Macalester students. {% block title %}{% endblock %}</title>
 
-	    <!-- This site uses the bootstrap css and javascript framework -->
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		<!-- end bootstrap -->
-	</head>
-	<body>
-		<div class="row container">
-            {% block login %}
-            {% if user.is_anonymous %}
+    <!-- jquery -->
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+    <!-- end of jquery -->
+
+    <!-- This site uses the bootstrap css and javascript framework -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="row container">
+    {% block login %}
+        {% if user.is_anonymous %}
             <table>
                 <form action="{% url 'user-login' %}" method="post">
                     {{ login_form.as_table }}
@@ -23,22 +28,22 @@
                 </form>
             </table>
             <a href="{% url 'user-create' %}">{% trans 'Register' %}</a>
-            {% else %}
+        {% else %}
             <p>{% trans "Current user: " %} <b>{{ user.get_full_name }}</b></p>
             <a href="{% url 'user-logout' %}">{% trans "Logout" %}</a>
             <br>
-            {% endif %}
-            {% endblock %}
+        {% endif %}
+    {% endblock %}
 
 
-		    {% block content %}
+    {% block content %}
 
-		    {% endblock %}
-	    </div>
-	    <div class="row container">
-	    {% block footer %}
+    {% endblock %}
+</div>
+<div class="row container">
+    {% block footer %}
 
-	    {% endblock %}
-	    </div>
-	</body>
+    {% endblock %}
+</div>
+</body>
 </html>
