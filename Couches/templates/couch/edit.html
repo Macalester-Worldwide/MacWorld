@@ -51,9 +51,6 @@
             {% comment %} Geocoding input function {% endcomment %}
 
             var marker = new google.maps.Marker();
-            $('#id_latitude').attr('disabled','disabled');
-            $('#id_longitude').attr('disabled','disabled');
-            $('#id_address').attr('disabled','disabled');
 
             $('#search-address').keyup(function() {
                 delay(function(){
@@ -71,9 +68,9 @@
                             map.setZoom(15);
                             map.panTo(marker.position);
 
-                            $('#id_latitude').val(results[0].geometry.location.lat());
-                            $('#id_longitude').val(results[0].geometry.location.lng());
-                            $('#id_address').val(results[0].formatted_address);
+                            $('input[name=latitude]').val(results[0].geometry.location.lat());
+                            $('input[name=longitude]').val(results[0].geometry.location.lng());
+                            $('input[name=address]').val(results[0].formatted_address);
                         }
                     });
                 }, 1000 );
