@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class CouchesProfile(Model):
-    user = OneToOneField(User, related_name='profile')
+    user = OneToOneField(User, related_name='couches_profile')
     description = TextField(max_length=300, blank=True)
     contact_information = TextField(max_length=300, blank=True)
     graduation_year = IntegerField(null=True, blank=True)
@@ -24,8 +24,9 @@ class Couch(Model):
     class Meta:
         verbose_name_plural = 'couches'
     owner = ForeignKey(CouchesProfile, related_name='couches')
-    lon = FloatField()
-    lat = FloatField()
+    longitude = FloatField()
+    latitude = FloatField()
+    address = CharField(max_length=200)
 
     def get_absolute_url(self):
         return reverse_lazy('couches-profile-detail', kwargs={'username': self.owner.user.username})
