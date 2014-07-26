@@ -1,4 +1,4 @@
-from Couches.forms import CouchesProfileForm
+from Couches.forms import CouchesProfileForm, CouchForm
 from Couches.models import CouchesProfile, Couch
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse, Http404
@@ -17,6 +17,13 @@ class CouchesHomeView(ListView):
 
 class CouchCreateView(CreateView):
     model = Couch
+    template_name = 'couch/edit.html'
+    form_class = CouchForm
+
+
+class CouchUpdateView(UpdateView):
+    model = Couch
+    form_class = CouchForm
     template_name = 'couch/edit.html'
 
 
