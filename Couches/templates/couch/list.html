@@ -25,9 +25,10 @@
 
         {% for couch in couches %}
         var couch{{ forloop.counter }} = new google.maps.Marker({
-            position: new google.maps.LatLng({{ couch.lat }}, {{ couch.lon }}),
+            position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
             map: map,
-            title:"{{ forloop.counter }}"
+            title:"{{ forloop.counter }}",
+            url: "{% url 'couches-profile-detail' username=couch.owner.user.username %}"
         });
         {% endfor %}
 
