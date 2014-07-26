@@ -20,6 +20,12 @@ class CouchCreateView(CreateView):
     template_name = 'couch/edit.html'
     form_class = CouchForm
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.owner = self.request.user.couches_profile
+        self.object.save()
+        return super(CouchCreateView, self).form_valid(form)
+
 
 class CouchUpdateView(UpdateView):
     model = Couch
