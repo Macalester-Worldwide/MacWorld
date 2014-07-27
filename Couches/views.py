@@ -5,8 +5,9 @@ from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, CreateView, UpdateView, ListView
+from django.views.generic import DetailView, CreateView, UpdateView, ListView, DeleteView
 from guardian.decorators import permission_required
+from guardian.shortcuts import assign_perm
 
 
 class CouchesHomeView(ListView):
@@ -25,6 +26,8 @@ class CouchCreateView(CreateView):
         self.object = form.save(commit=False)
         self.object.owner = self.request.user.couches_profile
         self.object.save()
+        assign_perm('change_couch', self.object.owner.user, self.object)
+        assign_perm('delete_couch', self.object.owner.user, self.object)
         return super(CouchCreateView, self).form_valid(form)
 
 
@@ -37,6 +40,16 @@ class CouchUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super(CouchUpdateView, self).dispatch(request, *args, **kwargs)
     # TODO: Think of a better way to accomplish the preceding three lines of code
+
+
+class CouchDeleteView(DeleteView):
+    model = Couch
+    template_name = 'couch/delete.html'
+    success_url = reverse_lazy('couches-home')
+
+    @method_decorator(permission_required('delete_couch', (Couch, 'pk', 'pk')))
+    def dispatch(self, request, *args, **kwargs):
+        return super(CouchDeleteView, self).dispatch(request, *args, **kwargs)
 
 
 class ProfileByUsernameMixin:
