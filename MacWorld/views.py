@@ -29,7 +29,7 @@ class UserPasswordChangeView(FormView):
     template_name = 'user/password_change.html'
 
 
-class LoginView(FormView):
+class LoginView(FormView):  # TODO: add support for ?next=x
     form_class = AuthenticationForm
     template_name = 'user/login.html'
     success_url = reverse_lazy('home')
