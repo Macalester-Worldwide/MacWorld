@@ -29,7 +29,7 @@
             </table>
             <a href="{% url 'user-create' %}">{% trans 'Register' %}</a>
         {% else %}
-            <p>{% trans "Current user: " %} <b>{{ user.get_full_name }}</b></p>
+            <p>{% trans "Current user: " %} <b>{{ user.get_full_name|default:user.username }}</b></p>
             <a href="{% url 'user-logout' %}">{% trans "Logout" %}</a>
             <br>
         {% endif %}
