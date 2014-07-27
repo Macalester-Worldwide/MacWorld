@@ -109,6 +109,9 @@ STATIC_URL = '/static/'
 
 ANONYMOUS_USER_ID = -1
 
+
+LOGIN_URL = '/user/login/'
+
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
