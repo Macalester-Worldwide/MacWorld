@@ -14,7 +14,7 @@ user_patterns = patterns('',
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls), name='admin'),
-    url(r'^user/', include(user_patterns), name='user'),
+    url(r'^auth/', include(user_patterns), name='user'),
     url(r'^couches/', include(couches_urls), name='couches'),
     url(r'^$', HomeView.as_view(), name='home'),
 )
