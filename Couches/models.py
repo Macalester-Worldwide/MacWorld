@@ -32,4 +32,4 @@ class Couch(Model):
         return reverse_lazy('couches-profile-detail', kwargs={'username': self.owner.user.username})
 
     def __unicode__(self):
-        return unicode('Couch owned by %s at (%s, %s)' % (self.owner, self.lat, self.lon))
+        return unicode('Couch owned by %s at (%s, %s)' % (self.owner, self.latitude, self.longitude))
