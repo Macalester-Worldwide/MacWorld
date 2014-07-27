@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, CreateView, UpdateView, ListView, DeleteView
 from guardian.decorators import permission_required
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, remove_perm
 
 
 class CouchesHomeView(ListView):
@@ -90,6 +90,7 @@ class ProfileCreateView(ProfileByUsernameMixin, CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
+        remove_perm('add_couchesprofile', self.request.user)
         return super(ProfileCreateView, self).form_valid(form)
 
 
