@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, Auth
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView, FormView, DetailView, CreateView, RedirectView
+from guardian.shortcuts import assign_perm
 
 
 class HomeView(TemplateView):
@@ -20,7 +21,8 @@ class UserCreateView(CreateView):
     form_class = UserCreationForm
     template_name = 'user/register.html'
 
-    def get_success_url(self):
+    def get_success_url(self):  # TODO: automatically login user?
+        assign_perm('add_couchesprofile', self.object)  # FIXME: Bad paradigm. requires manual addition of perm per app
         return reverse_lazy('user-detail', args=(self.object,))
 
 
