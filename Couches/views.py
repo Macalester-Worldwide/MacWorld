@@ -1,11 +1,12 @@
 from Couches.forms import CouchesProfileForm, CouchForm
 from Couches.models import CouchesProfile, Couch
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, CreateView, UpdateView, ListView
-from guardian.decorators import permission_required_or_403
+from guardian.decorators import permission_required
 
 
 class CouchesHomeView(ListView):
@@ -32,6 +33,11 @@ class CouchUpdateView(UpdateView):
     form_class = CouchForm
     template_name = 'couch/edit.html'
 
+    @method_decorator(permission_required('edit_couch', (Couch, 'pk', 'pk')))
+    def dispatch(self, request, *args, **kwargs):
+        return super(CouchUpdateView, self).dispatch(request, *args, **kwargs)
+    # TODO: Think of a better way to accomplish the preceding three lines of code
+
 
 class ProfileByUsernameMixin:
     slug_field = 'user__username'
@@ -42,6 +48,10 @@ class ProfileDetailView(ProfileByUsernameMixin, DetailView):
     model = CouchesProfile
     context_object_name = 'user_profile'
     template_name = 'user_profile/detail.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProfileDetailView, self).dispatch(self, request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         try:
