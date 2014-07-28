@@ -18,4 +18,5 @@ urlpatterns = patterns('',
     {'template_name':'profile_detail.html'}),
     url(r'^Couches/', include('userena.urls')),
     url(r'^messages/', include('userena.contrib.umessages.urls')),
+    url(r'^couches/', include('Couches.urls')),
 )

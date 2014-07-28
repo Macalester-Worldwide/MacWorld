@@ -1,4 +1,4 @@
-from Couches.models import Couch, CouchesProfile
+from Couches.models import Couch, UserProfile
 from Couches.serializers import CouchSerializer, CouchesProfileSerializer
 from rest_framework.viewsets import ModelViewSet
 
@@ -9,5 +9,5 @@ class CouchViewSet(ModelViewSet):
 
 
 class CouchesProfileViewSet(ModelViewSet):
-    queryset = CouchesProfile.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = CouchesProfileSerializer

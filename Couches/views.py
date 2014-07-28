@@ -1,5 +1,5 @@
 from Couches.forms import CouchesProfileForm, CouchForm
-from Couches.models import CouchesProfile, Couch
+from Couches.models import UserProfile, Couch
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse, Http404
@@ -58,7 +58,7 @@ class ProfileByUsernameMixin:
 
 
 class ProfileDetailView(ProfileByUsernameMixin, DetailView):
-    model = CouchesProfile
+    model = UserProfile
     context_object_name = 'user_profile'
     template_name = 'user_profile/detail.html'
 
@@ -82,7 +82,7 @@ class ProfileDetailView(ProfileByUsernameMixin, DetailView):
 
 
 class ProfileCreateView(ProfileByUsernameMixin, CreateView):
-    model = CouchesProfile
+    model = UserProfile
     form_class = CouchesProfileForm
     template_name = 'user_profile/create.html'
 
@@ -95,6 +95,6 @@ class ProfileCreateView(ProfileByUsernameMixin, CreateView):
 
 
 class ProfileUpdateView(ProfileByUsernameMixin, UpdateView):
-    model = CouchesProfile
+    model = UserProfile
     form_class = CouchesProfileForm
     template_name = 'user_profile/update.html'

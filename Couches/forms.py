@@ -2,9 +2,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from userena.forms import SignupForm
 from userena.forms import EditProfileForm
-from Couches.models import Couch
 from django.core.validators import RegexValidator
-from Couches.models import CouchesProfile, Couch
+from Couches.models import UserProfile, Couch
 from django.forms import ModelForm
 from django.forms.widgets import HiddenInput
 
@@ -64,7 +63,7 @@ class EditProfileFormExtra(EditProfileForm):
 
 class CouchesProfileForm(ModelForm):
     class Meta:
-        model = CouchesProfile
+        model = UserProfile
         fields = ['description', 'contact_information', 'graduation_year']
 
 
