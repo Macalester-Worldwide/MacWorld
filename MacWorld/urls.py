@@ -1,20 +1,21 @@
-from MacWorld.views import HomeView, LoginView, LogoutView, UserCreateView, UserDetailView
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from Couches import urls as couches_urls
+from Couches.forms import SignupFormExtra
+from Couches.forms import EditProfileFormExtra
 
 admin.autodiscover()
 
-user_patterns = patterns('',
-    url(r'^register/$', UserCreateView.as_view(), name='user-create'),
-    url(r'^login/$', LoginView.as_view(), name='user-login'),
-    url(r'^logout/$', LogoutView.as_view(), name='user-logout'),
-    url(r'(?P<username>.+)/$', UserDetailView.as_view(), name='user-detail')
-)
-
 urlpatterns = patterns('',
-    url(r'^admin/', include(admin.site.urls), name='admin'),
-    url(r'^auth/', include(user_patterns), name='user'),
-    url(r'^couches/', include(couches_urls), name='couches'),
-    url(r'^$', HomeView.as_view(), name='home'),
+    url(r'^admin/', include(admin.site.urls)),
+    (r'^Couches/signup/$',
+    'userena.views.signup',
+    {'template_name':'signup.html','signup_form': SignupFormExtra}),
+    url(r'^Couches/(?P<username>[\.\w-]+)/edit/$',
+    'userena.views.profile_edit',
+    {'template_name':'profile_form.html','edit_profile_form': EditProfileFormExtra}),
+    url(r'^Couches/(?P<username>[\.\w-]+)/$',
+    'userena.views.profile_detail',
+    {'template_name':'profile_detail.html'}),
+    url(r'^Couches/', include('userena.urls')),
+    url(r'^messages/', include('userena.contrib.umessages.urls')),
 )

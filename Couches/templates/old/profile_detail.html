@@ -1,4 +1,4 @@
-{% extends 'userena/base_userena.html' %}
+{% extends "base_macworld.html" %}
 {% load i18n %}
 {% load url from future %}
 
@@ -6,9 +6,14 @@
 {% block content_title %}<h2>{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h2>{% endblock %}
 
 {% block content %}
-   <div>{% comment %}For debugging purposes only.{% endcomment %}
-    <h1>Current user: {{ user }}</h1>
+
+   {% comment %}Show user for debugging purposes only.{% endcomment %}
+   <div>
+      <h1>Current user: {{ user }}</h1>
    </div>
+   {% comment %} End show user {% endcomment %}
+
+
    <div class="white-box">
     {% block profile_navigation %}
 
@@ -44,6 +49,10 @@
               <dt>{% trans "Age" %}</dt>
               <dd>{{ profile.age }}</dd>
             {% endif %}
+            {% if profile.graduation_year %}
+              <dt>{% trans "Graduation Year" %}</dt>
+              <dd>{{ profile.graduation_year }}</dd>
+            {% endif %}
             {% if profile.description %}
               <dt>{% trans "Description" %}</dt>
               <dd>{{ profile.description }}</dd>
@@ -52,6 +61,17 @@
               <dt>{% trans "Contact_information" %}</dt>
               <dd>{{ profile.contact_information }}</dd>
             {% endif %}
+            {% if profile.user.couches %}
+              {% for couch in profile.user.couches.all %}
+                <dt>{% trans "Address" %} </dt>
+                <dd>{{ couch.address }}</dd>
+                <dt>{% trans "Latitude" %}</dt>
+                <dd>{{ couch.latitude }}</dd>
+                <dt>{% trans "Longitude" %}</dt>
+                <dd>{{ couch.longitude }}</dd>
+              {% endfor %}
+            {% endif %}
+
           {% endblock %}
         </dl>
       {% endblock %}
