@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'guardian',
+    'rest_framework',
     'Couches',
 )
 
@@ -120,3 +121,8 @@ EMAIL_PORT = 587
 
 # sites framework
 SITE_ID = 1
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10
+}
