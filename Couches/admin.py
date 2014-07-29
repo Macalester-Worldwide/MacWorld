@@ -10,4 +10,5 @@ class CouchesProfileAdmin(GuardedModelAdmin):
 class CouchAdmin(GuardedModelAdmin):
     pass
 
+site.register(CouchesProfile, CouchesProfileAdmin)
 site.register(Couch, CouchAdmin)

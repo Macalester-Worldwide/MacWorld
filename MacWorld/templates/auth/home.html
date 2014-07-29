@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+    <ul>
+        <li><a href="{% url 'account_change_password' %}">{% trans 'Change/set password' %}</a></li>
+        <li><a href="{% url 'account_email' %}">{% trans 'Configure/change email' %}</a></li>
+        <li><a href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a></li>
+    </ul>
+{% endblock %}

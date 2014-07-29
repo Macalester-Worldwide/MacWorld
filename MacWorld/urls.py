@@ -1,18 +1,13 @@
-from MacWorld.views import LoginView, LogoutView, RegisterView
+from MacWorld.views import HomeView, AuthHomeView
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 admin.autodiscover()
 
-auth_urls = patterns('',
-    url(r'^login/$', LoginView.as_view(), name='login'),
-    url(r'^logout/$', LogoutView.as_view(), name='logout'),
-    url(r'^register/$', RegisterView.as_view(), name='register'),
-    url(r'^change_password', name='change_password'),
-)
-
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^auth/', include(auth_urls, namespace='auth')),
-    url(r'^couches/', include('Couches.urls')),
+    url(r'^auth/', include('allauth.urls')),
+    url(r'^auth/$', AuthHomeView.as_view(), name='auth.home'),
+    url(r'^couches/', include('Couches.urls', namespace='couches')),
+    url(r'^$', HomeView.as_view(), name='home'),
 )

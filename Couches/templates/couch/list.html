@@ -1,4 +1,4 @@
-{% extends "old/skeleton.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
 
@@ -28,7 +28,7 @@
             position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
             map: map,
             title:"{{ forloop.counter }}",
-            url: "{% url 'couches-profile-detail' username=couch.owner.user.username %}"
+            url: "{% url 'couches:couches_profile.detail' username=couch.owner.user.username %}"
         });
         {% endfor %}
 

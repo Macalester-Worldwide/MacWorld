@@ -1,4 +1,4 @@
-{% extends "old/skeleton.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
 
@@ -9,7 +9,8 @@
 <ul>
     <li><b>Apps</b></li>
     <ul>
-        <li><a href="{% url 'couches-home' %}">{% trans 'Couches' %}</a></li>
+        <li><a href="{% url 'auth.home' %}">{% trans 'Accounts' %}</a></li>
+        <li><a href="{% url 'couches:home' %}">{% trans 'Couches' %}</a></li>
     </ul>
 </ul>
 {% endblock %}

@@ -19,9 +19,9 @@
 <body>
 <div class="nav">
     {% if user.is_authenticated %}
-        Welcome! {{ user }} <a href="{% url "auth:login" %}"> Sign out. </a> <a href="{% url "my_profile" user.username %}"> My profile </a>
+        Welcome! {{ user.get_full_name|default:user.username }} <a href="{% url 'account_logout' %}"> Sign out. </a> <a href="/"> My account </a>
     {% else %}
-        Welcome, please <a href="{% url "auth:logout" %}" > Sign in </a> or <a href="{% url "signup" %}"> Sign up </a>
+        Welcome, please <a href="{% url 'account_login' %}"> Sign in </a> or <a href="{% url 'account_signup' %}"> Sign up </a>
     {% endif %}
 </div>
 <div class="row container">

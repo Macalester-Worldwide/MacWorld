@@ -1,23 +1,21 @@
 from Couches.forms import CouchesProfileForm, CouchForm
 from Couches.models import CouchesProfile, Couch
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import redirect
-from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, CreateView, UpdateView, ListView, DeleteView
-from guardian.decorators import permission_required
+from guardian.mixins import PermissionRequiredMixin as PermReq, LoginRequiredMixin as LoginReq
 from guardian.shortcuts import assign_perm, remove_perm
 
 
-class CouchesHomeView(ListView):
+class CouchesHomeView(LoginReq, ListView):
     model = Couch
     paginate_by = 10
     template_name = 'couch/list.html'
     context_object_name = 'couches'
 
 
-class CouchCreateView(CreateView):
+class CouchCreateView(LoginReq, CreateView):
     model = Couch
     template_name = 'couch/edit.html'
     form_class = CouchForm
@@ -31,40 +29,29 @@ class CouchCreateView(CreateView):
         return super(CouchCreateView, self).form_valid(form)
 
 
-class CouchUpdateView(UpdateView):
+class CouchUpdateView(PermReq, UpdateView):
+    permission_required = 'Couches.change_couch'
     model = Couch
     form_class = CouchForm
     template_name = 'couch/edit.html'
 
-    @method_decorator(permission_required('edit_couch', (Couch, 'pk', 'pk')))
-    def dispatch(self, request, *args, **kwargs):
-        return super(CouchUpdateView, self).dispatch(request, *args, **kwargs)
-    # TODO: Think of a better way to accomplish the preceding three lines of code
 
-
-class CouchDeleteView(DeleteView):
+class CouchDeleteView(PermReq, DeleteView):
+    permission_required = 'Couches.delete_couch'
     model = Couch
     template_name = 'couch/delete.html'
     success_url = reverse_lazy('couches-home')
 
-    @method_decorator(permission_required('delete_couch', (Couch, 'pk', 'pk')))
     def dispatch(self, request, *args, **kwargs):
         return super(CouchDeleteView, self).dispatch(request, *args, **kwargs)
 
 
-class ProfileByUsernameMixin:
-    slug_field = 'user__username'
-    slug_url_kwarg = 'username'
-
-
-class ProfileDetailView(ProfileByUsernameMixin, DetailView):
+class ProfileDetailView(LoginReq, DetailView):
     model = CouchesProfile
     context_object_name = 'couches_profile'
     template_name = 'couches_profile/detail.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ProfileDetailView, self).dispatch(request, *args, **kwargs)
+    slug_field = 'user__username'
+    slug_url_kwarg = 'username'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -81,7 +68,7 @@ class ProfileDetailView(ProfileByUsernameMixin, DetailView):
             raise error
 
 
-class ProfileCreateView(ProfileByUsernameMixin, CreateView):
+class ProfileCreateView(LoginReq, CreateView):
     model = CouchesProfile
     form_class = CouchesProfileForm
     template_name = 'couches_profile/edit.html'
@@ -94,7 +81,10 @@ class ProfileCreateView(ProfileByUsernameMixin, CreateView):
         return super(ProfileCreateView, self).form_valid(form)
 
 
-class ProfileUpdateView(ProfileByUsernameMixin, UpdateView):
+class ProfileUpdateView(PermReq, UpdateView):
+    permission_required = 'Couches.change_couchesprofile'
     model = CouchesProfile
     form_class = CouchesProfileForm
-    template_name = 'couches_profile/update.html'
+    template_name = 'couches_profile/edit.html'
+    slug_field = 'user__username'
+    slug_url_kwarg = 'username'
