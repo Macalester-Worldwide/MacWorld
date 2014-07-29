@@ -30,6 +30,7 @@ class Couch(Model):
     longitude = FloatField()
     latitude = FloatField()
     address = CharField(max_length=200)
+    long_address = CharField(max_length=200)
 
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
