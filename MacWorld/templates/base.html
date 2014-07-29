@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>Macalester Worldwide network, travel with Macalester students. {% block title %}{% endblock %}</title>
+
+    <!-- jquery -->
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+    <!-- end of jquery -->
+
+    <!-- This site uses the bootstrap css and javascript framework -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- end bootstrap -->
+
+</head>
+<body>
+<div class="nav">
+    {% if user.is_authenticated %}
+        Welcome! {{ user }} <a href="{% url "auth:login" %}"> Sign out. </a> <a href="{% url "my_profile" user.username %}"> My profile </a>
+    {% else %}
+        Welcome, please <a href="{% url "auth:logout" %}" > Sign in </a> or <a href="{% url "signup" %}"> Sign up </a>
+    {% endif %}
+</div>
+<div class="row container">
+    {% block content %}
+
+    {% endblock %}
+</div>
+<div class="row container">
+    {% block footer %}
+
+    {% endblock %}
+</div>
+</body>
+</html>

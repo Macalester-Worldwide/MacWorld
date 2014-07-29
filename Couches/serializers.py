@@ -1,10 +1,10 @@
-from Couches.models import UserProfile, Couch
+from Couches.models import CouchesProfile, Couch
 from rest_framework.serializers import HyperlinkedModelSerializer
 
 
 class CouchesProfileSerializer(HyperlinkedModelSerializer):
     class Meta:
-        model = UserProfile
+        model = CouchesProfile
         fields = ('user', 'description', 'contact_information', 'graduation_year')
 
 

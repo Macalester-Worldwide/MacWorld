@@ -1,6 +1,5 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView, FormView, DetailView, CreateView, RedirectView
 from guardian.shortcuts import assign_perm
@@ -10,16 +9,9 @@ class HomeView(TemplateView):
     template_name = 'home.html'
 
 
-class UserDetailView(DetailView):
-    model = User
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
-    template_name = 'user/detail.html'
-
-
 class UserCreateView(CreateView):
     form_class = UserCreationForm
-    template_name = 'user/register.html'
+    template_name = 'auth/register.html'
 
     def get_success_url(self):  # TODO: automatically login user?
         assign_perm('add_couchesprofile', self.object)  # FIXME: Bad paradigm. requires manual addition of perm per app
@@ -28,12 +20,12 @@ class UserCreateView(CreateView):
 
 class UserPasswordChangeView(FormView):
     form_class = PasswordChangeForm
-    template_name = 'user/password_change.html'
+    template_name = 'auth/password_change.html'
 
 
 class LoginView(FormView):  # TODO: add support for ?next=x
     form_class = AuthenticationForm
-    template_name = 'user/login.html'
+    template_name = 'auth/login.html'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):  # called if the entered username and password are valid
