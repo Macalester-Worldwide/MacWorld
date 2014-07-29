@@ -9,6 +9,7 @@ class CouchesProfile(Model):
     description = CharField(max_length=300, blank=True)
     contact_information = CharField(max_length=300, blank=True)
     graduation_year = CharField(max_length=300, blank=True)
+    
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
 

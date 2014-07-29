@@ -22,7 +22,7 @@ class CouchCreateView(LoginReq, CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.owner = self.request.user.couches_profile
+        self.object.owner = self.request.user.couches_profile # currently there is no way of adding a couches_profile to a user
         self.object.save()
         assign_perm('change_couch', self.object.owner.user, self.object)
         assign_perm('delete_couch', self.object.owner.user, self.object)
