@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm, PasswordResetForm
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView, FormView, DetailView, CreateView, RedirectView
 from guardian.shortcuts import assign_perm
@@ -9,7 +9,7 @@ class HomeView(TemplateView):
     template_name = 'home.html'
 
 
-class UserCreateView(CreateView):
+class RegisterView(CreateView):
     form_class = UserCreationForm
     template_name = 'auth/register.html'
 
@@ -18,9 +18,14 @@ class UserCreateView(CreateView):
         return reverse_lazy('user-detail', args=(self.object,))
 
 
-class UserPasswordChangeView(FormView):
+class PasswordChangeView(FormView):
     form_class = PasswordChangeForm
     template_name = 'auth/password_change.html'
+
+
+class PasswordResetView(FormView):
+    form_class = PasswordResetForm
+    template_name = 'auth/password_reset.html'
 
 
 class LoginView(FormView):  # TODO: add support for ?next=x
