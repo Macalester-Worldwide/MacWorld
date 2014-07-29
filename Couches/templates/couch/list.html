@@ -36,11 +36,15 @@
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 <div id="map-canvas"></div>
-<table>
+<table width="40%">
+    <tr>
+        <th>{% trans 'Owner' %}</th>
+        <th>{% trans 'Location' %}</th>
+    </tr>
     {% for couch in couches %}
     <tr>
-        <td>{{ couch.owner }}</td>
-        <td>{{ couch.lat }}, {{ couch.lon }}</td>
+        <td><a href="{{ couch.owner.get_absolute_url }}">{{ couch.owner }}</a></td>
+        <td><a href="{{ couch.get_absolute_url }}">{{ couch.address }}</a></td>
     </tr>
     {% endfor %}
 </table>
