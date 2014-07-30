@@ -46,7 +46,7 @@ class CouchDeleteView(PermReq, DeleteView):
     permission_required = 'Couches.delete_couch'
     model = Couch
     template_name = 'couch/delete.html'
-    success_url = reverse_lazy('couches-home')
+    success_url = reverse_lazy('couches:home')
 
     def dispatch(self, request, *args, **kwargs):
         return super(CouchDeleteView, self).dispatch(request, *args, **kwargs)

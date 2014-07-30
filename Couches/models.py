@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, UserManager
+from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Model, ForeignKey, FloatField, CharField, DateTimeField, ImageField, IntegerField
 from django.db.models.fields import EmailField, BooleanField
@@ -7,7 +7,7 @@ from django.utils.datetime_safe import datetime
 from django.utils.translation import ugettext as _
 
 
-class User(AbstractBaseUser):
+class User(PermissionsMixin, AbstractBaseUser):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['name', 'email', ]
     COLLEGE_FOUNDED_YEAR = 1874
@@ -21,13 +21,15 @@ class User(AbstractBaseUser):
                             help_text=_('Designates whether the user can log into this admin site.'))
     is_active = BooleanField(_('active'), default=True, help_text=_(
         'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'))
-    is_superuser = BooleanField(default=False)
     date_joined = DateTimeField(_('date joined'), default=timezone.now)
 
     profile_picture = ImageField(_('picture of user'), null=True, blank=True, upload_to='profile_pictures/')
     contact_information = CharField(max_length=300)
     description = CharField(max_length=500)
     graduation_year = IntegerField(null=True, choices=GRADUATION_YEAR_CHOICES)
+
+    def get_full_name(self):
+        return self.name
 
 
 class Couch(Model):
