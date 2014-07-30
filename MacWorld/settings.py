@@ -140,3 +140,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'METHOD': 'js_sdk'  # instead of 'oauth2'
     }
 }
+
+ACCOUNT_AUTHENTICATION_METHOD ='username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
