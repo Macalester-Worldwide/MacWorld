@@ -1,5 +1,5 @@
-from Couches.forms import CouchesProfileForm, CouchForm
-from Couches.models import CouchesProfile, Couch
+from Couches.forms import CouchForm, ProfileForm
+from Couches.models import User, Couch
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import redirect
@@ -15,17 +15,23 @@ class CouchesHomeView(LoginReq, ListView):
     context_object_name = 'couches'
 
 
-class CouchCreateView(LoginReq, CreateView):
+class CouchDetailView(DetailView):
+    model = Couch
+    template_name = 'couch/detail.html'
+    context_object_name = 'couch'
+
+
+class CouchCreateView(CreateView):
     model = Couch
     template_name = 'couch/edit.html'
     form_class = CouchForm
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.owner = self.request.user.couches_profile # currently there is no way of adding a couches_profile to a user
+        self.object.owner = self.request.user
         self.object.save()
-        assign_perm('change_couch', self.object.owner.user, self.object)
-        assign_perm('delete_couch', self.object.owner.user, self.object)
+        assign_perm('change_couch', self.object.owner, self.object)
+        assign_perm('delete_couch', self.object.owner, self.object)
         return super(CouchCreateView, self).form_valid(form)
 
 
@@ -40,16 +46,16 @@ class CouchDeleteView(PermReq, DeleteView):
     permission_required = 'Couches.delete_couch'
     model = Couch
     template_name = 'couch/delete.html'
-    success_url = reverse_lazy('couches-home')
+    success_url = reverse_lazy('couches:home')
 
     def dispatch(self, request, *args, **kwargs):
         return super(CouchDeleteView, self).dispatch(request, *args, **kwargs)
 
 
 class ProfileDetailView(LoginReq, DetailView):
-    model = CouchesProfile
+    model = User
     context_object_name = 'couches_profile'
-    template_name = 'couches_profile/detail.html'
+    template_name = 'old/couches_profile/detail.html'
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
 
@@ -68,23 +74,10 @@ class ProfileDetailView(LoginReq, DetailView):
             raise error
 
 
-class ProfileCreateView(LoginReq, CreateView):
-    model = CouchesProfile
-    form_class = CouchesProfileForm
-    template_name = 'couches_profile/edit.html'
-
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
-        remove_perm('add_couchesprofile', self.request.user)
-        return super(ProfileCreateView, self).form_valid(form)
-
-
 class ProfileUpdateView(PermReq, UpdateView):
-    permission_required = 'Couches.change_couchesprofile'
-    model = CouchesProfile
-    form_class = CouchesProfileForm
-    template_name = 'couches_profile/edit.html'
+    permission_required = 'Couches.change_user'
+    model = User
+    form_class = ProfileForm
+    template_name = 'old/couches_profile/edit.html'
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
