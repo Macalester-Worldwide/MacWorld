@@ -129,6 +129,8 @@ REST_FRAMEWORK = {
 }
 
 # auth and allauth settings
+ACCOUNT_SIGNUP_FORM_CLASS = 'Couches.forms.ProfileForm'
+AUTH_USER_MODEL = 'Couches.User'
 ANONYMOUS_USER_ID = -1
 LOGIN_URL = '/auth/login/'
 LOGOUT_URL = '/auth/logout/'
