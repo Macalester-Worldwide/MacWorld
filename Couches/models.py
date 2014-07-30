@@ -39,7 +39,8 @@ class Couch(Model):
     owner = ForeignKey(User, related_name='couches')
     longitude = FloatField()
     latitude = FloatField()
-    address = CharField(max_length=200)
+    address = CharField(max_length=200) # the address that the user inputs
+    formatted_address = CharField(max_length=200) # the formatted address provided by google maps geolocation
 
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
