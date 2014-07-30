@@ -1,5 +1,5 @@
 from Couches.api import CouchViewSet
-from Couches.views import CouchesHomeView, CouchCreateView, CouchUpdateView, CouchDeleteView
+from Couches.views import CouchesHomeView, CouchCreateView, CouchUpdateView, CouchDeleteView, CouchDetailView
 from django.conf.urls import patterns, url, include
 from rest_framework import routers
 
@@ -13,6 +13,7 @@ urlpatterns = patterns('',
                        url(r'^couch/create/$', CouchCreateView.as_view(), name='couch.create'),
                        url(r'^couch/(?P<pk>\d+)/edit/$', CouchUpdateView.as_view(), name='couch.update'),
                        url(r'^couch/(?P<pk>\d+)/delete/$', CouchDeleteView.as_view(), name='couch.delete'),
+                       url(r'^couch/(?P<pk>\d+)/$', CouchDetailView.as_view(), name='couch.detail'),
 
                        url(r'^$', CouchesHomeView.as_view(), name='home'),
 )

@@ -15,14 +15,20 @@ class CouchesHomeView(LoginReq, ListView):
     context_object_name = 'couches'
 
 
-class CouchCreateView(LoginReq, CreateView):
+class CouchDetailView(DetailView):
+    model = Couch
+    template_name = 'couch/detail.html'
+    context_object_name = 'couch'
+
+
+class CouchCreateView(CreateView):
     model = Couch
     template_name = 'couch/edit.html'
     form_class = CouchForm
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.owner = self.request.user.couches_profile # currently there is no way of adding a couches_profile to a user
+        self.object.owner = self.request.user
         self.object.save()
         assign_perm('change_couch', self.object.owner, self.object)
         assign_perm('delete_couch', self.object.owner, self.object)

@@ -38,13 +38,12 @@ class Couch(Model):
     longitude = FloatField()
     latitude = FloatField()
     address = CharField(max_length=200)
-    long_address = CharField(max_length=200)
 
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse_lazy('couches:couches_profile.detail', kwargs={'username': self.owner.user.username})
+        return reverse_lazy('couches:couch.detail', kwargs={'pk': self.pk})
 
     def __unicode__(self):
         return unicode('Couch owned by %s at (%s, %s)' % (self.owner, self.latitude, self.longitude))
