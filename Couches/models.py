@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _
 
 
 class User(AbstractBaseUser):
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'username' # Blank comment
     REQUIRED_FIELDS = ['name', 'email', ]
     COLLEGE_FOUNDED_YEAR = 1874
     GRADUATION_YEAR_CHOICES = reversed(tuple([(i, i) for i in range(COLLEGE_FOUNDED_YEAR, datetime.now().year + 6)]))
