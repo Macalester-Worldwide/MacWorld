@@ -18,4 +18,4 @@ class CouchForm(ModelForm):
     class Meta:
         model = Couch
         exclude = ['owner']
-        widgets = {'latitude': HiddenInput, 'longitude': HiddenInput, 'address': HiddenInput}
+        widgets = {'latitude': HiddenInput, 'longitude': HiddenInput, 'formatted_address': HiddenInput}

@@ -5,12 +5,66 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<div id="homepage-map">
+</div>
 
-<ul>
-    <li><b>Apps</b></li>
-    <ul>
-        <li><a href="{% url 'auth.home' %}">{% trans 'Accounts' %}</a></li>
-        <li><a href="{% url 'couches:home' %}">{% trans 'Couches' %}</a></li>
-    </ul>
-</ul>
+<div id="homepage-info" class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<h1>Macalester around the world</h1>
+			<p>Stay on the couches of Macalester students and alumni on your travels or host other interesting Macalester alumni on their travels.</p>
+			{% if not user.is_authenticated %}
+			<form action="{% url 'account_signup' %}">
+	        	<input class="btn btn-primary navbar-btn" type="submit" value="Sign up to host or find hosts">
+	        </form>
+	        {% endif %}
+		</div>
+	</div>
+</div>
+
+<style type="text/css">
+#homepage-map{
+	  height: 100%; 
+	  width: 100%; 
+	  position:absolute; 
+	  top: 50px; 
+	  left: 0; 
+	  z-index: 0;
+	}
+#homepage-info{
+  z-index: 1;
+}
+</style>
+
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
+</script>
+<script type="text/javascript">
+    function initialize() {
+        var mapOptions = {
+            center: new google.maps.LatLng(0, 0),
+            zoom: 1
+        };
+        var map = new google.maps.Map(document.getElementById("homepage-map"),
+                mapOptions);
+
+        {% for couch in couches %}
+        var couch{{ forloop.counter }} = new google.maps.Marker({
+            position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
+            map: map,
+            url: "#",
+            title:"{{ couch.user }}"
+        });
+
+        google.maps.event.addListener(couch{{ forloop.counter }}, 'click', function() {
+        	window.location.href = couch{{ forloop.counter }}.url;
+        });
+
+        {% endfor %}
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
 {% endblock %}

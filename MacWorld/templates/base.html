@@ -1,38 +1,55 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
-<head>
-    <title>Macalester Worldwide network, travel with Macalester students. {% block title %}{% endblock %}</title>
+    <head>
+        <title>Macalester Worldwide network, travel with Macalester students. {% block title %}{% endblock %}</title>
 
-    <!-- jquery -->
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
-    <!-- end of jquery -->
+        <!-- jquery -->
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+        <!-- end of jquery -->
 
-    <!-- This site uses the bootstrap css and javascript framework -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <!-- end bootstrap -->
+        <!-- This site uses the bootstrap css and javascript framework -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <!-- end bootstrap -->
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'css/style.css'%}" />
 
-</head>
-<body>
-<div class="nav">
-    {% if user.is_authenticated %}
-        Welcome! {{ user.get_best_identifier }} <a href="{% url 'account_logout' %}"> Sign out. </a> <a href="{% url 'auth.home' %}"> My account </a>
-    {% else %}
-        Welcome, please <a href="{% url 'account_login' %}"> Sign in </a> or <a href="{% url 'account_signup' %}"> Sign up </a>
-    {% endif %}
-</div>
-<div class="row container">
-    {% block content %}
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="{% url 'home' %}" class="navbar-brand">Macalester WorldWide</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                    <li> {{ user.get_best_identifier }}  </li>
+                    <li> <a href="{% url 'auth.home' %}"> My account </a> </li>
+                    <li> <a href="{% url 'account_logout' %}">  Sign out. </a> </li>
+                {% else %}
+                    <li>
+                        <form action="{% url 'account_login' %}">
+                            <input class="btn btn-primary navbar-btn" type="submit" value="Sign in">
+                        </form>
+                    </li>
+                    <li>
+                        <form action="{% url 'account_signup' %}">
+                            <input class="btn btn-primary navbar-btn" type="submit" value="Sign up">
+                        </form>
+                    </li>
 
-    {% endblock %}
-</div>
-<div class="row container">
-    {% block footer %}
+                {% endif %}
+                </ul>
+            </div>
+        </nav>
+            {% block content %}
 
-    {% endblock %}
-</div>
-</body>
+            {% endblock %}
+            {% block footer %}
+
+            {% endblock %}
+    </body>
 </html>
