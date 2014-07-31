@@ -6,7 +6,13 @@ from django.forms.widgets import HiddenInput
 class ProfileForm(ModelForm):
     class Meta:
         model = User
-        fields = ['description', 'contact_information', 'graduation_year', 'profile_picture']
+        fields = ['name', 'description', 'contact_information', 'graduation_year', 'profile_picture']
+
+    def signup(self, request, user):
+        for field in self.Meta.fields:
+            print('%s: %s' % (field, self.cleaned_data[field]))
+            setattr(user, field, self.cleaned_data[field])
+        user.save()
 
 
 class CouchForm(ModelForm):
