@@ -9,17 +9,13 @@
 </div>
 
 <div id="homepage-info" class="container">
-	<div class="row">
-		<div class="col-md-4">
 			<h1>Macalester around the world</h1>
 			<p>Stay on the couches of Macalester students and alumni on your travels or host other interesting Macalester alumni on their travels.</p>
 			{% if not user.is_authenticated %}
 			<form action="{% url 'account_signup' %}">
-	        	<input class="btn btn-primary navbar-btn" type="submit" value="Sign up to host or find hosts">
+	        	<input class="btn btn-primary navbar-btn" type="submit" value="Sign up to host and find hosts">
 	        </form>
 	        {% endif %}
-		</div>
-	</div>
 </div>
 
 <style type="text/css">
@@ -32,7 +28,16 @@
 	  z-index: 0;
 	}
 #homepage-info{
-  z-index: 1;
+	  z-index: 1;
+	  opacity: 0.95;
+	  height: 50%;
+	  width: 50%;
+}
+#homepage-info h1{
+	font-size: 3.5em;
+}
+#homepage-info p{
+	font-size: 1.6em;
 }
 </style>
 
