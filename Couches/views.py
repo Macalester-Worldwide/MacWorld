@@ -21,7 +21,7 @@ class CouchDetailView(DetailView):
     context_object_name = 'couch'
 
 
-class CouchCreateView(CreateView):
+class CouchCreateView(LoginReq, CreateView):
     model = Couch
     template_name = 'couch/edit.html'
     form_class = CouchForm
@@ -40,6 +40,11 @@ class CouchUpdateView(PermReq, UpdateView):
     model = Couch
     form_class = CouchForm
     template_name = 'couch/edit.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super(CouchUpdateView, self).get_context_data(**kwargs)
+        context_data.update({'couch': self.object})
+        return context_data
 
 
 class CouchDeleteView(PermReq, DeleteView):
