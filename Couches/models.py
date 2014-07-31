@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin, BaseUserManager
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Model, ForeignKey, FloatField, CharField, DateTimeField, ImageField, IntegerField
 from django.db.models.fields import EmailField, BooleanField
@@ -7,7 +7,7 @@ from django.utils.datetime_safe import datetime
 from django.utils.translation import ugettext as _
 
 
-class User(PermissionsMixin, AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['name', 'email', ]
     COLLEGE_FOUNDED_YEAR = 1874
@@ -30,6 +30,9 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     def get_full_name(self):
         return self.name
+
+    def get_best_identifier(self):
+        return self.name if self.name else self.username
 
 
 class Couch(Model):

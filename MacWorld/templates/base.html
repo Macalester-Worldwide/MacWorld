@@ -19,7 +19,7 @@
 <body>
 <div class="nav">
     {% if user.is_authenticated %}
-        Welcome! {{ user.get_name_display }} <a href="{% url 'account_logout' %}"> Sign out. </a> <a href="{% url 'auth.home' %}"> My account </a>
+        Welcome! {{ user.get_best_identifier }} <a href="{% url 'account_logout' %}"> Sign out. </a> <a href="{% url 'auth.home' %}"> My account </a>
     {% else %}
         Welcome, please <a href="{% url 'account_login' %}"> Sign in </a> or <a href="{% url 'account_signup' %}"> Sign up </a>
     {% endif %}
