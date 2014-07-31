@@ -21,7 +21,7 @@ class CouchDetailView(DetailView):
     context_object_name = 'couch'
 
 
-class CouchCreateView(CreateView):
+class CouchCreateView(LoginReq, CreateView):
     model = Couch
     template_name = 'couch/edit.html'
     form_class = CouchForm
