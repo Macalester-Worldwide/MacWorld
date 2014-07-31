@@ -10,7 +10,6 @@ class ProfileForm(ModelForm):
 
     def signup(self, request, user):
         for field in self.Meta.fields:
-            print('%s: %s' % (field, self.cleaned_data[field]))
             setattr(user, field, self.cleaned_data[field])
         user.save()
 
