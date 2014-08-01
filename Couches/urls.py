@@ -17,6 +17,4 @@ urlpatterns = patterns('',
 
                        url(r'^profile/(?P<username>\w+)/edit/$', ProfileUpdateView.as_view(), name='profile.update'),
                        url(r'^profile/(?P<username>\w+)/$', ProfileDetailView.as_view(), name='profile.detail'),
-
-                       url(r'^$', CouchesHomeView.as_view(), name='home'),
 )

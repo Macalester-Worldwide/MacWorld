@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^auth/', include('allauth.urls')),
-	url(r'^auth/$', AuthHomeView.as_view(), name='auth.home'),
-    url(r'^couches/', include('Couches.urls', namespace='couches')),
+    url(r'^auth/$', AuthHomeView.as_view(), name='auth.home'),
+    url(r'^', include('Couches.urls', namespace='couches')),
     url(r'^$', HomeView.as_view(), name='home'),
 )
