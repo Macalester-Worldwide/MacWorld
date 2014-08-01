@@ -26,7 +26,7 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                    <li> {{ user.get_best_identifier }}  </li>
+                    <li> <a>{{ user.get_best_identifier }}</a>  </li>
                     <li> <a href="{% url 'auth.home' %}"> My account </a> </li>
                     <li> <a href="{% url 'account_logout' %}">  Sign out. </a> </li>
                 {% else %}
