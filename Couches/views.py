@@ -61,23 +61,9 @@ class ProfileDetailView(LoginReq, DetailView):
     model = User
     context_object_name = 'couches_profile'
     template_name = 'user/detail.html'
-    slug_field = 'user__username'
+    slug_field = 'username'
     slug_url_kwarg = 'username'
 
-    def get(self, request, *args, **kwargs):
-        try:
-            return super(ProfileDetailView, self).get(request)
-        except NotImplementedError:
-            return redirect(to=reverse_lazy('couches-profile-create'), permanent=False)
-
-    def get_object(self, queryset=None):
-        try:
-            # return super(ProfileDetailView, self).get_object(queryset)
-            return get_object_or_404(User, username=self.kwargs['username'])
-        except Http404 as error:
-            if self.request.user.username == self.kwargs['username']:
-                raise NotImplementedError()  # FIXME: better exception needed (possibly custom)
-            raise error
 
 class ProfileUpdateView(PermReq, UpdateView):
     permission_required = 'Couches.change_user'
