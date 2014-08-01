@@ -38,10 +38,10 @@
 
             var marker = new google.maps.Marker();
 
-            $('#search-address').keyup(function() {
+            $('#id_address').keyup(function() {
                 delay(function(){
 
-                    geocoder.geocode({ 'address': $('#search-address').val() }, function(results, status) {
+                    geocoder.geocode({ 'address': $('#id_address').val() }, function(results, status) {
                         if (status == google.maps.GeocoderStatus.OK) {
                             marker.setMap(null);
 
@@ -56,7 +56,7 @@
 
                             $('input[name=latitude]').val(results[0].geometry.location.lat());
                             $('input[name=longitude]').val(results[0].geometry.location.lng());
-                            $('input[name=address]').val(results[0].formatted_address);
+                            $('input[name=formatted_address]').val(results[0].formatted_address);
                         }
                     });
                 }, 1000 );
@@ -74,5 +74,4 @@
         </table>
         {% csrf_token %}
     </form>
-    <input id="search-address" type="text">
 {% endblock %}
