@@ -2,7 +2,7 @@ from Couches.forms import CouchForm, ProfileForm
 from Couches.models import User, Couch
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse, Http404
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DetailView, CreateView, UpdateView, ListView, DeleteView
 from guardian.mixins import PermissionRequiredMixin as PermReq, LoginRequiredMixin as LoginReq
 from guardian.shortcuts import assign_perm, remove_perm
@@ -60,7 +60,7 @@ class CouchDeleteView(PermReq, DeleteView):
 class ProfileDetailView(LoginReq, DetailView):
     model = User
     context_object_name = 'couches_profile'
-    template_name = 'old/couches_profile/detail.html'
+    template_name = 'user/detail.html'
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
 
@@ -72,17 +72,17 @@ class ProfileDetailView(LoginReq, DetailView):
 
     def get_object(self, queryset=None):
         try:
-            return super(ProfileDetailView, self).get_object(queryset)
+            # return super(ProfileDetailView, self).get_object(queryset)
+            return get_object_or_404(User, username=self.kwargs['username'])
         except Http404 as error:
             if self.request.user.username == self.kwargs['username']:
                 raise NotImplementedError()  # FIXME: better exception needed (possibly custom)
             raise error
 
-
 class ProfileUpdateView(PermReq, UpdateView):
     permission_required = 'Couches.change_user'
     model = User
     form_class = ProfileForm
-    template_name = 'old/couches_profile/edit.html'
+    template_name = 'user/edit.html'
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
