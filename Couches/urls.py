@@ -15,5 +15,8 @@ urlpatterns = patterns('',
                        url(r'^couch/(?P<pk>\d+)/delete/$', CouchDeleteView.as_view(), name='couch.delete'),
                        url(r'^couch/(?P<pk>\d+)/$', CouchDetailView.as_view(), name='couch.detail'),
 
+                       url(r'^profile/(?P<pk>\d+)/edit/$', ProfileUpdateView.as_view(), name='profile.update'),
+                       url(r'^profile/(?P<pk>\d+)/$', ProfileDetailView.as_view(), name='profile.detail'),
+
                        url(r'^$', CouchesHomeView.as_view(), name='home'),
 )
