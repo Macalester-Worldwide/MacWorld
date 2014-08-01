@@ -16,16 +16,21 @@
 		</div>
 		<div class="col-md-6" id="addresses-container">
 				<h3> Addresses </h3>
-				<ul class="list-unstyled">
-					{% for couch in couches_profile.couches.all %}
-						<li> 
-							<blockquote> 
-								<p><address> {{ couch.address }} </address> </p>
-								<footer> {{ couch.formatted_address }} </footer>
-							</blockquote>
-						</li>
-					{% endfor %}
-				</ul>
+					<dl class="accordion">
+						{% for couch in couches_profile.couches.all %}
+						<dt><a href="" > {{ couch.address }} </a> </dt>
+						<dd>{{ couch.formatted_address }}</dd>
+						{% endfor %}
+					</dl>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="list-inline">
+				<li>
+					<a href="/couches/couch/create" > Add a new couch </a>
+				</li>
+			</ul>
 		</div>
 	</div>
 	{% endif %}
@@ -58,11 +63,11 @@
 	</div>
 	<div class="row-fluid">
 		<ul class="list-inline">
-		<li> <strong> Edit Profile: </strong> </li>
-        <li><a href="{% url 'account_change_password' %}">{% trans 'Change password' %}</a></li>
-        <li><a href="{% url 'account_email' %}">{% trans 'Configure email' %}</a></li>
-        <li><a href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a></li>
-    </ul>
+			<li> <strong> Edit Profile: </strong> </li>
+        	<li><a href="{% url 'account_change_password' %}">{% trans 'Change password' %}</a></li>
+        	<li><a href="{% url 'account_email' %}">{% trans 'Configure email' %}</a></li>
+        	<li><a href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a></li>
+    	</ul>
 	</div>
 </div>
 
@@ -72,11 +77,29 @@
 			height: 100%%;
 			width: 100%;
 		}
+		#addresses-container{
+			min-height: 200px;
+		}
+		.accordion a{
+			color: black;
+		}
 	</style>
 	<script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
     </script>
     <script type="text/javascript">
+    	(function($) {
+    
+		  var allPanels = $('.accordion > dd').hide();
+		    
+		  $('.accordion > dt > a').click(function() {
+		    allPanels.slideUp();
+		    $(this).parent().next().slideDown();
+		    return false;
+		  });
+
+		})(jQuery);
+
         function initialize() {
 
         	$('#map-container').height($('#addresses-container').height());
@@ -90,7 +113,7 @@
                 },{
                     "elementType": "labels",
                     "stylers": [
-                        { "visibility": "off" }
+                        { "visibility": "on" }
                     ]
                 },{
                     "featureType": "administrative",
@@ -113,8 +136,8 @@
                 var couch{{ forloop.counter }} = new google.maps.Marker({
                     position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
                     map: map,
-                    url: "#",
-                    title:"{{ couch.user }}"
+                    url: "/couches/couch/{{couch.pk}}/delete",
+                    title:"Delete this couch"
                 });
 
                 google.maps.event.addListener(couch{{ forloop.counter }}, 'click', function() {

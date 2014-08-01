@@ -34,6 +34,9 @@ class CouchCreateView(LoginReq, CreateView):
         assign_perm('delete_couch', self.object.owner, self.object)
         return super(CouchCreateView, self).form_valid(form)
 
+    def get_success_url(self):
+        return "/couches/profile/"+self.request.user.username
+
 
 class CouchUpdateView(PermReq, UpdateView):
     permission_required = 'Couches.change_couch'
@@ -55,6 +58,8 @@ class CouchDeleteView(PermReq, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         return super(CouchDeleteView, self).dispatch(request, *args, **kwargs)
+    def get_success_url(self):
+        return "/couches/profile/"+self.request.user.username
 
 
 class ProfileDetailView(LoginReq, DetailView):
