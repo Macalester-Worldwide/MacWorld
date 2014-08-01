@@ -26,8 +26,7 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-<<<<<<< HEAD
-                    <li> <p class="navbar-text"> Signed in as {{ user.get_best_identifier }} </p></li>
+                    <li> <p class="navbar-text"> Signed in as <a href="{{ user.get_absolute_url }}">{{ user.get_best_identifier }}</a> </p></li>
                     <li>
                         <form action="{% url 'auth.home' %}">
                             <input class="btn btn-success navbar-btn" type="submit" value="My account">
@@ -38,11 +37,6 @@
                             <input class="btn btn-danger navbar-btn" type="submit" value="Sign out">
                         </form>
                     </li>
-=======
-                    <li> <a href="{{ user.get_absolute_url }}">{{ user.get_best_identifier }}</a>  </li>
-                    <li> <a href="{% url 'auth.home' %}"> My account </a> </li>
-                    <li> <a href="{% url 'account_logout' %}">  Sign out. </a> </li>
->>>>>>> d004857b73776db940d565af8e3bfff2684f12c3
                 {% else %}
                     <li>
                         <form action="{% url 'account_login' %}">
