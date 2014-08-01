@@ -34,6 +34,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_best_identifier(self):
         return self.name if self.name else self.username
 
+    def get_absolute_url(self):
+        return reverse_lazy('couches:profile.detail', kwargs={'username': self.username})
+
 
 class Couch(Model):
     class Meta:
