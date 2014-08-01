@@ -75,5 +75,5 @@ class ProfileUpdateView(PermReq, UpdateView):
     model = User
     form_class = ProfileForm
     template_name = 'user/edit.html'
-    slug_field = 'user__username'
+    slug_field = 'username'
     slug_url_kwarg = 'username'
