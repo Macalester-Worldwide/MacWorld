@@ -1,5 +1,5 @@
 from Couches.api import CouchViewSet
-from Couches.views import CouchesHomeView, CouchCreateView, CouchUpdateView, CouchDeleteView, CouchDetailView, ProfileUpdateView, ProfileDetailView
+from Couches.views import CouchCreateView, CouchUpdateView, CouchDeleteView, CouchDetailView, ProfileUpdateView, ProfileDetailView
 from django.conf.urls import patterns, url, include
 from rest_framework import routers
 
