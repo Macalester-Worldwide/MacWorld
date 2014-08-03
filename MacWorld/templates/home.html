@@ -15,6 +15,11 @@
             <form action="{% url 'account_signup' %}">
                 <input class="btn btn-primary navbar-btn" type="submit" value="Sign up to host and find hosts">
             </form>
+        {% else %}
+            <div class="input-group">
+                <span class="input-group-addon">Search for couches:</span>
+                <input type="text" class="form-control" placeholder="Location">
+            </div>
         {% endif %}
     </div>
 
@@ -34,10 +39,10 @@
             width: 50%;
         }
         #homepage-info h1{
-            font-size: 3.5em;
+            font-size: 3.3em;
         }
         #homepage-info p{
-            font-size: 1.6em;
+            font-size: 1.4em;
         }
     </style>
 

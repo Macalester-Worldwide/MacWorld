@@ -18,12 +18,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = EmailField(unique=True)
     name = CharField(_('full name'), max_length=100, blank=True)
     email_visible = BooleanField(_('visibility of email towards other members'), 
-                    default=True, help_text=_('Enabiling this allows other users to see your e-mail.'))
+                    default=False, help_text=_('Enabiling this allows other users to see your e-mail.'))
     is_staff = BooleanField(_('staff status'), default=False,
                             help_text=_('Designates whether the user can log into this admin site.'))
     is_active = BooleanField(_('active'), default=True, help_text=_(
         'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'))
-    date_joined = DateTimeField(_('date joined'), default=timezone.now)
+    date_joined = DateTimeField(_('date joined'), auto_now_add=True)
 
     profile_picture = ImageField(_('picture of user'), null=True, blank=True, upload_to='profile_pictures/')
     contact_information = CharField(max_length=300)
@@ -47,7 +47,7 @@ class Couch(Model):
     owner = ForeignKey(User, related_name='couches')
     longitude = FloatField()
     latitude = FloatField()
-    address = CharField(max_length=200, help_text=_('Please enter the address of your new location.'))
+    address = CharField(max_length=200, help_text=_('Type the address of your new location.'))
     formatted_address = CharField(max_length=200, help_text=_('The address as formatted by google maps geolocation.'))
 
     created_at = DateTimeField(auto_now_add=True)
