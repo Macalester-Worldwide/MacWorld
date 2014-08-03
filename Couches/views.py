@@ -9,7 +9,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from guardian.mixins import PermissionRequiredMixin as PermReq, LoginRequiredMixin as LoginReq
 from guardian.shortcuts import assign_perm, remove_perm
 from django.contrib import messages
-
+from allauth.account.decorators import verified_email_required
 
 class CouchesHomeView(LoginReq, ListView):
     model = Couch
@@ -17,12 +17,10 @@ class CouchesHomeView(LoginReq, ListView):
     template_name = 'couch/list.html'
     context_object_name = 'couches'
 
-
-class CouchDetailView(DetailView):
+class CouchDetailView(LoginReq, DetailView):
     model = Couch
     template_name = 'couch/detail.html'
     context_object_name = 'couch'
-
 
 class CouchCreateView(LoginReq, CreateView):
     model = Couch
@@ -40,8 +38,7 @@ class CouchCreateView(LoginReq, CreateView):
     def get_success_url(self):
         return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
-
-class CouchUpdateView(PermReq, UpdateView):
+class CouchUpdateView(LoginReq, PermReq, UpdateView):
     permission_required = 'Couches.change_couch'
     model = Couch
     form_class = CouchForm
@@ -52,8 +49,7 @@ class CouchUpdateView(PermReq, UpdateView):
         context_data.update({'couch': self.object})
         return context_data
 
-
-class CouchDeleteView(PermReq, DeleteView):
+class CouchDeleteView(LoginReq, PermReq, DeleteView):
     permission_required = 'Couches.delete_couch'
     model = Couch
     template_name = 'couch/delete.html'
@@ -64,14 +60,12 @@ class CouchDeleteView(PermReq, DeleteView):
     def get_success_url(self):
         return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
-
 class ProfileDetailView(LoginReq, DetailView):
     model = User
     context_object_name = 'couches_profile'
     template_name = 'user/detail.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
-
 
 class ProfileUpdateView(PermReq, UpdateView):
     permission_required = 'Couches.change_user'
@@ -81,7 +75,7 @@ class ProfileUpdateView(PermReq, UpdateView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
-class ProfileEmailFormView(SuccessMessageMixin, FormView):
+class ProfileEmailFormView(LoginReq, SuccessMessageMixin, FormView):
     form_class = UserContactForm
     template_name = "user/email.html"
     success_message = "This user was e-mailed successfully."
