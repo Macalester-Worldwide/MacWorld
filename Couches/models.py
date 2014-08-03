@@ -1,10 +1,12 @@
-from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Model, ForeignKey, FloatField, CharField, DateTimeField, ImageField, IntegerField
 from django.db.models.fields import EmailField, BooleanField
 from django.utils import timezone
 from django.utils.datetime_safe import datetime
 from django.utils.translation import ugettext as _
+from guardian.core import ObjectPermissionChecker
+from guardian.shortcuts import assign_perm
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -27,6 +29,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     contact_information = CharField(max_length=300)
     description = CharField(max_length=500)
     graduation_year = IntegerField(null=True, choices=GRADUATION_YEAR_CHOICES)
+
+    def save(self, *args, **kwargs):  # FIXME: This should only be done on user creation
+        super(User, self).save()
+        if not ObjectPermissionChecker(self).has_perm('Couches.change_user', self):
+            assign_perm('Couches.change_user', self, self)
 
     def get_full_name(self):
         return self.name
