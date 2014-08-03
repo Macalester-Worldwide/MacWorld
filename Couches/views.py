@@ -1,11 +1,14 @@
-from Couches.forms import CouchForm, ProfileForm
+from Couches.forms import CouchForm, ProfileForm, UserContactForm
 from Couches.models import User, Couch
 from django.core.urlresolvers import reverse_lazy
+from django.core.mail import send_mail
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import DetailView, CreateView, UpdateView, ListView, DeleteView
+from django.views.generic import DetailView, CreateView, UpdateView, ListView, DeleteView, FormView
+from django.contrib.messages.views import SuccessMessageMixin
 from guardian.mixins import PermissionRequiredMixin as PermReq, LoginRequiredMixin as LoginReq
 from guardian.shortcuts import assign_perm, remove_perm
+from django.contrib import messages
 
 
 class CouchesHomeView(LoginReq, ListView):
@@ -77,3 +80,27 @@ class ProfileUpdateView(PermReq, UpdateView):
     template_name = 'user/edit.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
+class ProfileEmailFormView(SuccessMessageMixin, FormView):
+    form_class = UserContactForm
+    template_name = "user/email.html"
+    success_message = "This user was e-mailed successfully."
+
+    def form_valid(self, form):
+        message = "\n\n{0}".format(form.cleaned_data.get('message'))
+        user = User.objects.get(username=self.kwargs['username'])
+        send_mail(
+            subject="Contact from "+self.request.user.username+" on MacWorld",
+            message=message,
+            from_email='info@macworld.com',
+            recipient_list=[user.email],
+        )
+        return super(ProfileEmailFormView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('couches:profile.detail', kwargs={'username': self.kwargs['username']})
+
+    def get_context_data(self, **kwargs):
+        context_data = super(ProfileEmailFormView, self).get_context_data(**kwargs)
+        context_data.update({'username': self.kwargs['username']})
+        return context_data

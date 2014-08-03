@@ -5,8 +5,19 @@
 {% block content %}
 
 <div class="container">
+
+
+	{% if messages %}
+		<div class="row-fluid messages">
+		    {% for message in messages %}
+		    	{{ message }}
+		    {% endfor %}
+	    </div>
+	{% endif %}
+
 	<div class="row-fluid page-header">
 			<h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
+			<a href="{% url 'couches:profile.email' couches_profile.username %}" > Send an e-mail </a>
 	</div>
 	{% if couches_profile.couches.all %}
 	<div class="row-fluid">
@@ -16,12 +27,12 @@
 		</div>
 		<div class="col-md-6" id="addresses-container">
 				<h3> Addresses </h3>
-					<dl class="accordion">
-						{% for couch in couches_profile.couches.all %}
-						<dt><a href="" > {{ couch.address }} </a> </dt>
-						<dd>{{ couch.formatted_address }}</dd>
-						{% endfor %}
-					</dl>
+				<ul class="list-unstyled">
+				{% for couch in couches_profile.couches.all %}
+
+				<li> <strong> <button type="button" class="btn btn-link popover-dismiss" data-toggle="popover" data-content="{{ couch.formatted_address }}">{{ couch.address }}</button> </strong> </li>
+				{% endfor %}
+				</ul>
 		</div>
 	</div>
 	<div class="row">
@@ -55,10 +66,12 @@
 			{% comment %}
 				Only authenticated users should be able to see and send e-mails. TODO: Users get to specify whether their e-mail is visible to everyone or not.
 			{% endcomment %}
-			<div class="col-md-4">
-				<h3> E-mail </h3>
-				<p> <a href="mailto:{{ couches_profile.email }}"> {{ couches_profile.email }} </a> </p>
-			</div>
+			{% if couches_profile.email_visible %}
+				<div class="col-md-4">
+					<h3> E-mail </h3>
+					<p> <a href="mailto:{{ couches_profile.email }}"> {{ couches_profile.email }} </a> </p>
+				</div>
+			{% endif %}
 		{% endif %}
 	</div>
 	<div class="row-fluid text-center" id="account-edit">
@@ -94,19 +107,10 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
     </script>
     <script type="text/javascript">
-    	(function($) {
-    
-		  var allPanels = $('.accordion > dd').hide();
-		    
-		  $('.accordion > dt > a').click(function() {
-		    allPanels.slideUp();
-		    $(this).parent().next().slideDown();
-		    return false;
-		  });
-
-		})(jQuery);
 
         function initialize() {
+
+        	$('[data-toggle="popover"]').popover({trigger: 'focus'});
 
             var mapStyles = [
                 {

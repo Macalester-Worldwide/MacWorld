@@ -1,4 +1,5 @@
 from Couches.models import User, Couch
+from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import HiddenInput
 
@@ -19,3 +20,6 @@ class CouchForm(ModelForm):
         model = Couch
         exclude = ['owner']
         widgets = {'latitude': HiddenInput, 'longitude': HiddenInput, 'formatted_address': HiddenInput}
+
+class UserContactForm(forms.Form):
+    message = forms.CharField(widget=forms.Textarea)
