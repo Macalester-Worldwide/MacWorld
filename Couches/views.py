@@ -25,6 +25,30 @@ class CouchDetailView(LoginReq, DetailView):
     context_object_name = 'couch'
 
 
+'''
+class CouchSearchRedirect(FormView):
+    form_class = CouchSearchForm
+
+    def form_valid(self, form):
+        return redirect(reverse_lazy('couches:couch.search'))
+'''
+
+
+class CouchSearchView(LoginReq, ListView):
+    model = Couch
+    template_name = 'couch/search.html'
+    context_object_name = 'couches'
+
+    def get_queryset(self):
+        latitude_tolerance = 10.0
+        longitude_tolerance = 10.0
+        latitude = float(self.kwargs['latitude'])
+        longitude = float(self.kwargs['longitude'])
+        latitude_range = (latitude - latitude_tolerance, latitude + latitude_tolerance)
+        longitude_range = (longitude - longitude_tolerance, longitude + longitude_tolerance)
+        return Couch.objects.filter(latitude__range = latitude_range, longitude__range = longitude_range)
+
+
 class CouchCreateView(LoginReq, CreateView):
     model = Couch
     template_name = 'couch/edit.html'
@@ -62,6 +86,7 @@ class CouchDeleteView(LoginReq, PermReq, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         return super(CouchDeleteView, self).dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
@@ -92,7 +117,7 @@ class ProfileEmailFormView(LoginReq, SuccessMessageMixin, FormView):
         message = "\n\n{0}".format(form.cleaned_data.get('message'))
         user = User.objects.get(username=self.kwargs['username'])
         send_mail(
-            subject="Contact from "+self.request.user.username+" on MacWorld",
+            subject="Contact from " + self.request.user.username + " on MacWorld",
             message=message,
             from_email='info@macworld.com',
             recipient_list=[user.email],

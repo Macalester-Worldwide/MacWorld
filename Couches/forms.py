@@ -1,6 +1,5 @@
 from Couches.models import User, Couch
-from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Form, CharField, FloatField
 from django.forms.widgets import HiddenInput, TextInput, Textarea
 
 
@@ -22,5 +21,6 @@ class CouchForm(ModelForm):
         exclude = ['owner']
         widgets = {'latitude': HiddenInput, 'longitude': HiddenInput, 'formatted_address': HiddenInput, 'address': TextInput(attrs={'class': 'form-control',})}
 
-class UserContactForm(forms.Form):
-    message = forms.CharField(widget=forms.Textarea)
+
+class UserContactForm(Form):
+    message = CharField(widget=Textarea)

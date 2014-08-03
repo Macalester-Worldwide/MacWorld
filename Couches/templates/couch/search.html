@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+    {% for couch in couches %}
+        {{ couch }} Couch {{ forloop.counter }}
+    {% endfor %}
+    Yep, you have the right template.
+{% endblock %}
