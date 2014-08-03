@@ -11,16 +11,19 @@ from guardian.shortcuts import assign_perm, remove_perm
 from django.contrib import messages
 from allauth.account.decorators import verified_email_required
 
+
 class CouchesHomeView(LoginReq, ListView):
     model = Couch
     paginate_by = 10
     template_name = 'couch/list.html'
     context_object_name = 'couches'
 
+
 class CouchDetailView(LoginReq, DetailView):
     model = Couch
     template_name = 'couch/detail.html'
     context_object_name = 'couch'
+
 
 class CouchCreateView(LoginReq, CreateView):
     model = Couch
@@ -38,6 +41,7 @@ class CouchCreateView(LoginReq, CreateView):
     def get_success_url(self):
         return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
+
 class CouchUpdateView(LoginReq, PermReq, UpdateView):
     permission_required = 'Couches.change_couch'
     model = Couch
@@ -48,6 +52,7 @@ class CouchUpdateView(LoginReq, PermReq, UpdateView):
         context_data = super(CouchUpdateView, self).get_context_data(**kwargs)
         context_data.update({'couch': self.object})
         return context_data
+
 
 class CouchDeleteView(LoginReq, PermReq, DeleteView):
     permission_required = 'Couches.delete_couch'
@@ -60,12 +65,14 @@ class CouchDeleteView(LoginReq, PermReq, DeleteView):
     def get_success_url(self):
         return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
+
 class ProfileDetailView(LoginReq, DetailView):
     model = User
     context_object_name = 'couches_profile'
     template_name = 'user/detail.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
 
 class ProfileUpdateView(PermReq, UpdateView):
     permission_required = 'Couches.change_user'
@@ -74,6 +81,7 @@ class ProfileUpdateView(PermReq, UpdateView):
     template_name = 'user/edit.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
 
 class ProfileEmailFormView(LoginReq, SuccessMessageMixin, FormView):
     form_class = UserContactForm
