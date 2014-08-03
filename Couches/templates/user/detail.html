@@ -2,6 +2,8 @@
 
 {% load i18n %}
 
+{% load staticfiles %}
+
 {% block content %}
 
 <div class="container">
@@ -15,9 +17,14 @@
 	    </div>
 	{% endif %}
 
+
 	<div class="row page-header">
 			<h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
-			<a href="{% url 'couches:profile.email' couches_profile.username %}" > Send an e-mail </a>
+			{% if user == couches_profile %}
+			<a class="btn btn-primary" href="{% url 'couches:profile.update' couches_profile.username %}"> <img src="{% static 'images/user_edit.png' %}" /> Edit your profile </a>
+			{% else %}
+			<a class="btn btn-info" href="{% url 'couches:profile.email' couches_profile.username %}" > <img src="{% static 'images/email.png' %}" /> Send an e-mail </a>
+			{% endif %}
 	</div>
 	{% if couches_profile.couches.all %}
 	<div class="row">
