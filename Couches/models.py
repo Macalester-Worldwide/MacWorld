@@ -19,6 +19,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = CharField(unique=True, max_length=30)
     email = EmailField(unique=True)
     name = CharField(_('full name'), max_length=100, blank=True)
+    email_visible = BooleanField(_('visibility of email towards other members'), 
+                    default=True, help_text=_('Enabiling this allows other users to see your e-mail.'))
     is_staff = BooleanField(_('staff status'), default=False,
                             help_text=_('Designates whether the user can log into this admin site.'))
     is_active = BooleanField(_('active'), default=True, help_text=_(
