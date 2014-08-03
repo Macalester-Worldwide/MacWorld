@@ -15,12 +15,12 @@
 	    </div>
 	{% endif %}
 
-	<div class="row-fluid page-header">
+	<div class="row page-header">
 			<h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
 			<a href="{% url 'couches:profile.email' couches_profile.username %}" > Send an e-mail </a>
 	</div>
 	{% if couches_profile.couches.all %}
-	<div class="row-fluid">
+	<div class="row">
 		<div class="col-md-6" id="map-container">
 			<div id="profile-map">
 			</div>
@@ -45,7 +45,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="row-fluid">
+	<div class="row">
 		{% if couches_profile.contact_information %}
 			<div class="col-md-4">
 				<h3> Contact Information </h3>
@@ -62,19 +62,14 @@
 			</p>
 		</div>
 		{% endif %}
-		{% if user.is_authenticated %}
-			{% comment %}
-				Only authenticated users should be able to see and send e-mails. TODO: Users get to specify whether their e-mail is visible to everyone or not.
-			{% endcomment %}
+		<div class="col-md-4">
 			{% if couches_profile.email_visible %}
-				<div class="col-md-4">
-					<h3> E-mail </h3>
-					<p> <a href="mailto:{{ couches_profile.email }}"> {{ couches_profile.email }} </a> </p>
-				</div>
+			<h3> E-mail </h3>
+			<p> <a href="mailto:{{ couches_profile.email }}"> {{ couches_profile.email }} </a> </p>
 			{% endif %}
-		{% endif %}
+		</div>
 	</div>
-	<div class="row-fluid text-center" id="account-edit">
+	<div class="row text-center" id="account-edit">
 			<ul class="list-inline">
 				<li> <strong> <small> Edit Profile: </small> </strong> </li>
 	        	<li><small> <a href="{% url 'account_change_password' %}">{% trans 'Change password' %}</a></small></li>
