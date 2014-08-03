@@ -28,7 +28,7 @@
                 {% if user.is_authenticated %}
                     <li> <p class="navbar-text"> Signed in as <a href="{{ user.get_absolute_url }}">{{ user.get_best_identifier }}</a> </p></li>
                     <li>
-                        <form action="{{ user.get_absolute_url }}">
+                        <form action="{% url 'auth.home' %}">
                             <input class="btn btn-success navbar-btn" type="submit" value="My account">
                         </form>
                     </li>
