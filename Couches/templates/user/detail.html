@@ -28,7 +28,7 @@
 		<div class="col-md-12">
 			<ul class="list-inline">
 				<li>
-					<a href="/couches/couch/create" > Add a new couch </a>
+					<a href="{% url 'couches:couch.create' %}" > Add a new couch </a>
 				</li>
 			</ul>
 		</div>
@@ -140,7 +140,7 @@
                 var couch{{ forloop.counter }} = new google.maps.Marker({
                     position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
                     map: map,
-                    url: "/couches/couch/{{couch.pk}}/delete",
+                    url: "{% url 'couches:couch.delete' couch.pk %}",
                     title:"Delete this couch"
                 });
 

@@ -35,7 +35,7 @@ class CouchCreateView(LoginReq, CreateView):
         return super(CouchCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return "/couches/profile/"+self.request.user.username
+        return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
 
 class CouchUpdateView(PermReq, UpdateView):
@@ -59,7 +59,7 @@ class CouchDeleteView(PermReq, DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super(CouchDeleteView, self).dispatch(request, *args, **kwargs)
     def get_success_url(self):
-        return "/couches/profile/"+self.request.user.username
+        return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
 
 class ProfileDetailView(LoginReq, DetailView):
