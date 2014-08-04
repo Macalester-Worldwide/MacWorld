@@ -1,7 +1,7 @@
 from Couches.forms import CouchForm, ProfileForm, UserContactForm
 from Couches.models import User, Couch
 from django.core.urlresolvers import reverse_lazy
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DetailView, CreateView, UpdateView, ListView, DeleteView, FormView
@@ -114,14 +114,17 @@ class ProfileEmailFormView(LoginReq, SuccessMessageMixin, FormView):
     success_message = "This user was e-mailed successfully."
 
     def form_valid(self, form):
-        message = "\n\n{0}".format(form.cleaned_data.get('message'))
+        message = "Hi! The user: "+self.request.user.username+" ("+ self.request.user.email+") has sent you a message at MacWorld."
+        message += "\n\n{0}".format(form.cleaned_data.get('message'))
+        message += "\n\n Reply to this message to send him an e-mail."
         user = User.objects.get(username=self.kwargs['username'])
-        send_mail(
-            subject="Contact from " + self.request.user.username + " on MacWorld",
-            message=message,
-            from_email='info@macworld.com',
-            recipient_list=[user.email],
-        )
+        email = EmailMessage(
+            "Contact from " + self.request.user.username + " on MacWorld",
+            message,
+            'info@macworld.com',
+            [user.email],
+            headers = {'Reply-To': self.request.user.email})
+        email.send(fail_silently=False)
         return super(ProfileEmailFormView, self).form_valid(form)
 
     def get_success_url(self):
