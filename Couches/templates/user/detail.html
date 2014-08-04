@@ -10,7 +10,7 @@
 
 
 	{% if messages %}
-		<div class="row-fluid messages">
+		<div class="row messages alert alert-info">
 		    {% for message in messages %}
 		    	{{ message }}
 		    {% endfor %}
@@ -19,15 +19,19 @@
 
 
 	<div class="row page-header">
-			<h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
-			{% if user == couches_profile %}
-			<a class="btn btn-primary" href="{% url 'couches:profile.update' couches_profile.username %}"> <img src="{% static 'images/user_edit.png' %}" /> Edit your profile </a>
-			{% else %}
-			<a class="btn btn-info" href="{% url 'couches:profile.email' couches_profile.username %}" > <img src="{% static 'images/email.png' %}" /> Send an e-mail </a>
-			{% endif %}
+			<div class="col-md-8">
+				<h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
+			</div>
+			<div class="col-md-4 text-right">
+				{% if user == couches_profile %}
+				<a class="btn btn-primary" href="{% url 'couches:profile.update' couches_profile.username %}"> <img src="{% static 'images/user_edit.png' %}" /> Edit your profile </a>
+				{% else %}
+				<a class="btn btn-info" href="{% url 'couches:profile.email' couches_profile.username %}" > <img src="{% static 'images/email_go.png' %}" /> Send an e-mail </a>
+				{% endif %}
+			</div>
 	</div>
-	{% if couches_profile.couches.all %}
 	<div class="row">
+	{% if couches_profile.couches.all %}
 		<div class="col-md-6" id="map-container">
 			<div id="profile-map">
 			</div>
@@ -40,22 +44,32 @@
 				<li> <strong> <button type="button" class="btn btn-link popover-dismiss" data-toggle="popover" data-content="{{ couch.formatted_address }}">{{ couch.address }}</button> </strong> </li>
 				{% endfor %}
 				</ul>
+				{% if user = couches_profile %}
+					<a class="btn btn-default" href="{% url 'couches:couch.create' %}" >
+					<img src="{% static 'images/add.png' %}"/> Add a new couch </a>
+				{% endif %}
 		</div>
-	</div>
+	{% else %}
+		{% if user = couches_profile %}
+			<div class="col-md-8">
+				<p class="alert alert-warning"> You have added no couches. </p>
+			</div>
+			<div class="col-md-4">
+				<a class="btn btn-default" href="{% url 'couches:couch.create' %}" >
+				<img src="{% static 'images/add.png' %}"/> Add a new couch </a>
+			</div>
+		{% else %}
+			<div class="col-md-12">
+					<p class="alert alert-warning"> This user has added no couches. </p>
+			</div>
+		{% endif %}
 	{% endif %}
-	<div class="row">
-		<div class="col-md-12">
-			<ul class="list-inline">
-				<li>
-					<a href="{% url 'couches:couch.create' %}" > Add a new couch </a>
-				</li>
-			</ul>
-		</div>
+
 	</div>
 	<div class="row">
 		{% if couches_profile.contact_information %}
 			<div class="col-md-4">
-				<h3> Contact Information </h3>
+				<h3>   Contact Information <img src="{% static 'images/vcard.png' %}"/> </h3>
 				<p> 
 				{{ couches_profile.contact_information }}
 				</p>
@@ -63,7 +77,7 @@
 		{% endif %}
 		{% if couches_profile.description %}
 		<div class="col-md-4">
-			<h3> Description </h3>
+			<h3>  Description <img src="{% static 'images/page.png' %}"/> </h3>
 			<p>
 			{{ couches_profile.description }}
 			</p>
@@ -71,19 +85,21 @@
 		{% endif %}
 		<div class="col-md-4">
 			{% if couches_profile.email_visible %}
-			<h3> E-mail </h3>
+			<h3>   E-mail <img src="{% static 'images/email.png' %}"/> </h3>
 			<p> <a href="mailto:{{ couches_profile.email }}"> {{ couches_profile.email }} </a> </p>
 			{% endif %}
 		</div>
 	</div>
-	<div class="row text-center" id="account-edit">
-			<ul class="list-inline">
-				<li> <strong> <small> Account Settings: </small> </strong> </li>
-	        	<li><small> <a href="{% url 'account_change_password' %}">{% trans 'Change password' %}</a></small></li>
-	        	<li><small> <a href="{% url 'account_email' %}">{% trans 'Configure email' %}</a></small></li>
-	        	<li><small> <a href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a></small></li>
-	    	</ul>
-	</div>
+	{% if user = couches_profile %}
+		<div class="row text-center" id="account-edit">
+				<ul class="list-inline">
+					<li> <strong> <small> Account Settings: </small> </strong> </li>
+		        	<li><small> <a href="{% url 'account_change_password' %}">{% trans 'Change password' %}</a></small></li>
+		        	<li><small> <a href="{% url 'account_email' %}">{% trans 'Configure email' %}</a></small></li>
+		        	<li><small> <a href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a></small></li>
+		    	</ul>
+		</div>
+	{% endif %}
 </div>
 
 {% if couches_profile.couches.all %}
