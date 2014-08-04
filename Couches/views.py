@@ -10,6 +10,7 @@ from guardian.mixins import PermissionRequiredMixin as PermReq, LoginRequiredMix
 from guardian.shortcuts import assign_perm, remove_perm
 from django.contrib import messages
 from allauth.account.decorators import verified_email_required
+from django.db.models.query import QuerySet
 
 
 class CouchesHomeView(LoginReq, ListView):
@@ -33,20 +34,29 @@ class CouchSearchRedirect(FormView):
         return redirect(reverse_lazy('couches:couch.search'))
 '''
 
-
 class CouchSearchView(LoginReq, ListView):
     model = Couch
     template_name = 'couch/search.html'
     context_object_name = 'couches'
 
     def get_queryset(self):
-        latitude_tolerance = 10.0
-        longitude_tolerance = 10.0
         latitude = float(self.kwargs['latitude'])
         longitude = float(self.kwargs['longitude'])
-        latitude_range = (latitude - latitude_tolerance, latitude + latitude_tolerance)
-        longitude_range = (longitude - longitude_tolerance, longitude + longitude_tolerance)
-        return Couch.objects.filter(latitude__range = latitude_range, longitude__range = longitude_range)
+        latitude_tolerance, longitude_tolerance = 0.0, 0.0
+        resultsQuerySet = None
+        while resultsQuerySet is None or resultsQuerySet.count() == 0:
+            latitude_tolerance += 10.0
+            longitude_tolerance += 10.0
+            latitude_range = (latitude - latitude_tolerance, latitude + latitude_tolerance)
+            longitude_range = (longitude - longitude_tolerance, longitude + longitude_tolerance)
+            resultsQuerySet = Couch.objects.filter(latitude__range = latitude_range, longitude__range = longitude_range)
+        return resultsQuerySet
+
+    def get_context_data(self, **kwargs):
+        context_data = super(CouchSearchView, self).get_context_data(**kwargs)
+        context_data.update({'address': self.kwargs['address']})
+        return context_data
+
 
 
 class CouchCreateView(LoginReq, CreateView):
