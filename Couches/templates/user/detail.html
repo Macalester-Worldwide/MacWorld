@@ -8,16 +8,6 @@
 
 <div class="container">
 
-
-	{% if messages %}
-		<div class="row messages alert alert-info">
-		    {% for message in messages %}
-		    	{{ message }}
-		    {% endfor %}
-	    </div>
-	{% endif %}
-
-
 	<div class="row page-header">
 			<div class="col-md-8">
 				<h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
@@ -30,6 +20,13 @@
 				{% endif %}
 			</div>
 	</div>
+	{% if couches_profile.description %}
+	<div class="row">
+		<p class="lead">
+			{{ couches_profile.description }}
+		</p>
+	</div>
+	{% endif %}
 	<div class="row">
 	{% if couches_profile.couches.all %}
 		<div class="col-md-6" id="map-container">
@@ -52,7 +49,7 @@
 	{% else %}
 		{% if user = couches_profile %}
 			<div class="col-md-8">
-				<p class="alert alert-warning"> You have added no couches. </p>
+				<p class="alert alert-danger"> <strong> Ups! You have added no couches. </strong> Please add a couch so that people can find you. </p>
 			</div>
 			<div class="col-md-4">
 				<a class="btn btn-default" href="{% url 'couches:couch.create' %}" >
@@ -68,22 +65,14 @@
 	</div>
 	<div class="row">
 		{% if couches_profile.contact_information %}
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<h3>   Contact Information <img src="{% static 'images/vcard.png' %}"/> </h3>
 				<p> 
 				{{ couches_profile.contact_information }}
 				</p>
 			</div>
 		{% endif %}
-		{% if couches_profile.description %}
-		<div class="col-md-4">
-			<h3>  Description <img src="{% static 'images/page.png' %}"/> </h3>
-			<p>
-			{{ couches_profile.description }}
-			</p>
-		</div>
-		{% endif %}
-		<div class="col-md-4">
+		<div class="col-md-6">
 			{% if couches_profile.email_visible %}
 			<h3>   E-mail <img src="{% static 'images/email.png' %}"/> </h3>
 			<p> <a href="mailto:{{ couches_profile.email }}"> {{ couches_profile.email }} </a> </p>
@@ -101,26 +90,7 @@
 		</div>
 	{% endif %}
 </div>
-
-{% if couches_profile.couches.all %}
-	<style>
-		#profile-map{
-			height: 250px;
-			width: 100%;
-		}
-		#addresses-container{
-			min-height: 200px;
-		}
-		.accordion a{
-			color: black;
-		}
-		#account-edit{
-			color: grey;
-		}
-		#account-edit a{
-			color: grey;
-		}
-	</style>
+	{% if couches_profile.couches.all %}
 	<script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
     </script>

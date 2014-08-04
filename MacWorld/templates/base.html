@@ -20,7 +20,7 @@
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="navbar-header">
                     <a href="{% url 'home' %}" class="navbar-brand">Macalester Worldwide</a>
                 </div>
@@ -53,7 +53,14 @@
                 </ul>
             </div>
         </nav>
-        <div class="container-fluid">
+        <div class="container">
+                {% if messages %}
+                <div class="row messages alert alert-info">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+                {% endif %}
             {% block content %}
 
             {% endblock %}

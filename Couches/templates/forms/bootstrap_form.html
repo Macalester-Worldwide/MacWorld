@@ -1,0 +1,26 @@
+{% for field in form %}
+    <div class="form-group">
+    	<ul class="list-unstyled">
+	    	<li>
+	    	{% if field.errors %}
+		    	<div class="alert alert-danger">
+		    		{{ field.errors }}
+		    	</div>
+	    	{% endif %}
+	    	</li>
+	    	<li>
+	    	{{ field.label_tag }}
+
+	    	{% if field.field.required %}
+	    	*
+	    	{% endif %}
+
+	    	{% if field.help_text %} 
+	    		<span class="help-block">{{ field.help_text }} </span>
+	    	{% endif %}
+
+	    	</li>
+	        {{ field }}
+        </ul>
+    </div>
+{% endfor %}
