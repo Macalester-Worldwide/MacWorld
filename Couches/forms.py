@@ -11,10 +11,10 @@ class ProfileForm(ModelForm):
         widgets = {
             'name' : TextInput({'class': 'form-control'}),
             'description': Textarea(attrs={'placeholder': _('Description'), 'class': 'form-control'}),
-            'contact_information': Textarea(attrs={'placeholder': _('Contact Information', 'class': 'form-control')}),
+            'contact_information': Textarea(attrs={'placeholder': _('Contact Information'), 'class': 'form-control'}),
             'name': TextInput(attrs={'placeholder': _('Full Name'), 'class': 'form-control'}),
         }
-        
+
     def signup(self, request, user):
         for field in self.Meta.fields:
             setattr(user, field, self.cleaned_data[field])
