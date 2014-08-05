@@ -35,10 +35,18 @@
             })();
 
 
+            {% if couch %}
+                var latlng = new google.maps.LatLng({{couch.latitude}}, {{couch.longitude}});
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: latlng
+                    });
+                map.setCenter(latlng);
+            {% else %}
+                var marker = new google.maps.Marker();
+            {% endif %}
+
             {% comment %} Geocoding input function {% endcomment %}
-
-            var marker = new google.maps.Marker();
-
             $('#id_address').keyup(function() {
                 delay(function(){
 
@@ -74,7 +82,10 @@
                 <div class="form-group">
                 {{ form.as_p }}
                     {% load staticfiles %}
-                    <input class="btn btn-primary" id="submit-button" data-loading-text="Loading..." type="submit" value="{% trans 'Add' %}">
+                    <input class="btn btn-primary" id="submit-button" data-loading-text="Loading..." type="submit" value="{% if couch %} Update {% else %} Add {%endif%}">
+                    {% if couch %}
+                    <a href="{% url 'couches:couch.delete' couch.pk %}" class="btn btn-danger" type="button"> Delete  </a>
+                    {% endif %}
                 </div>
                 
             {% csrf_token %}
