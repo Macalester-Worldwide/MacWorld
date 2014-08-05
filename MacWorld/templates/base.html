@@ -28,11 +28,6 @@
                 {% if user.is_authenticated %}
                     <li> <p class="navbar-text"> Signed in as <a href="{{ user.get_absolute_url }}">{{ user.get_best_identifier }}</a> </p></li>
                     <li>
-                        <form action="{% url 'auth.home' %}">
-                            <input class="btn btn-success navbar-btn" type="submit" value="My account">
-                        </form>
-                    </li>
-                    <li>
                         <form action="{% url 'account_logout' %}">
                             <input class="btn btn-danger navbar-btn" type="submit" value="Sign out">
                         </form>
@@ -48,7 +43,6 @@
                             <input class="btn btn-primary navbar-btn" type="submit" value="Sign up">
                         </form>
                     </li>
-
                 {% endif %}
                 </ul>
             </div>

@@ -39,7 +39,7 @@ class CouchSearchRedirect(FormView):
                     'latitude': clean_data['latitude'],
                     'longitude': clean_data['longitude'],
                     'address': clean_data['address'],
-                    #'tolerance': clean_data['tSearchViewolerance'],
+                    #'tolerance': clean_data['tSearchViewolerance'],  # FIXME: What?
                 }
             )
         )

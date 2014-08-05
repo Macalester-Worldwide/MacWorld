@@ -26,6 +26,3 @@ class HomeView(FormView):
                 }
             )
         )
-
-class AuthHomeView(TemplateView):
-    template_name = 'auth/home.html'
