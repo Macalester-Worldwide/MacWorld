@@ -39,7 +39,7 @@ class CouchSearchRedirect(FormView):
                     'latitude': clean_data['latitude'],
                     'longitude': clean_data['longitude'],
                     'address': clean_data['address'],
-                    #'tolerance': clean_data['tolerance'],
+                    #'tolerance': clean_data['tSearchViewolerance'],
                 }
             )
         )
@@ -55,9 +55,26 @@ class CouchSearchView(LoginReq, ListView):
         latitude = float(self.kwargs['latitude'])
         longitude = float(self.kwargs['longitude'])
         tolerance = self.DEFAULT_TOLERANCE if not self.kwargs['tolerance'] else float(self.kwargs['tolerance'].strip('/'))
-        latitude_range = (latitude - tolerance, latitude + tolerance)
-        longitude_range = (longitude - tolerance, longitude + tolerance)
-        return Couch.objects.filter(latitude__range=latitude_range, longitude__range=longitude_range)
+        minLat = latitude
+        maxLat = latitude
+        minLon = longitude
+        maxLon = longitude
+        resultsQuerySet = None
+        while (
+            (resultsQuerySet is None) or 
+            (resultsQuerySet.count() == 0 and (
+                (minLat > -85.0 and maxLat < 85.0) and 
+                (minLon > -180.0 and maxLon < 180.0)
+                )
+            )):
+            minLat -= tolerance
+            maxLat += tolerance
+            minLon -= tolerance
+            maxLon += tolerance
+            latitude_range = (minLat, maxLat)
+            longitude_range = (minLon, maxLon)
+            resultsQuerySet = Couch.objects.filter(latitude__range=latitude_range, longitude__range=longitude_range)
+        return resultsQuerySet
 
     def get_context_data(self, **kwargs):
         context_data = super(CouchSearchView, self).get_context_data(**kwargs)
