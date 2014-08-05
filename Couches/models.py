@@ -27,7 +27,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'))
     date_joined = DateTimeField(_('date joined'), auto_now_add=True)
 
-    profile_picture = ImageField(_('picture of user'), null=True, blank=True, upload_to='profile_pictures/')
+    profile_picture = ImageField(_('picture of user'), null=True, blank=True, upload_to='Couches/static/profile_pictures/')
     contact_information = CharField(max_length=300, help_text=_('How can others contact you?'))
     description = CharField(max_length=500, help_text=_('Tell us a bit more about yourself.'))
     graduation_year = IntegerField(null=True, choices=GRADUATION_YEAR_CHOICES)
@@ -56,6 +56,7 @@ class Couch(Model):
     latitude = FloatField()
     address = CharField(max_length=200, help_text=_('Type the address of your new location.'))
     formatted_address = CharField(max_length=200, help_text=_('The address as formatted by google maps geolocation.'))
+    description = CharField(max_length=300, blank=True, help_text=_('A description of this couch. How many people can you host? Is it a futon or a sofa?'))
 
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)

@@ -109,13 +109,14 @@ class CouchUpdateView(LoginReq, PermReq, UpdateView):
         context_data = super(CouchUpdateView, self).get_context_data(**kwargs)
         context_data.update({'couch': self.object})
         return context_data
+    def get_success_url(self):
+        return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
 
 class CouchDeleteView(LoginReq, PermReq, DeleteView):
     permission_required = 'Couches.delete_couch'
     model = Couch
     template_name = 'couch/delete.html'
-    success_url = reverse_lazy('couches:home')
 
     def dispatch(self, request, *args, **kwargs):
         return super(CouchDeleteView, self).dispatch(request, *args, **kwargs)

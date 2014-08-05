@@ -17,7 +17,8 @@ class ProfileForm(ModelForm):
 
     def signup(self, request, user):
         for field in self.Meta.fields:
-            setattr(user, field, self.cleaned_data[field])
+            if field != 'email_visible': # only show e-mail visibility setting if this is not signup
+                setattr(user, field, self.cleaned_data[field])
         user.save()
 
     def __init__(self, *args, **kw):
@@ -31,7 +32,7 @@ class CouchForm(ModelForm):
         model = Couch
         exclude = ['owner']
         widgets = {'latitude': HiddenInput, 'longitude': HiddenInput, 'formatted_address': HiddenInput,
-                   'address': TextInput(attrs={'class': 'form-control', })}
+                   'address': TextInput(attrs={'class': 'form-control'}), 'description': Textarea(attrs={'class': 'form-control', 'rows':4, 'cols':15})}
 
 
 class CouchSearchForm(ModelForm):
