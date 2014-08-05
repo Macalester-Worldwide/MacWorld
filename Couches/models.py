@@ -56,7 +56,7 @@ class Couch(Model):
     latitude = FloatField()
     address = CharField(max_length=200, help_text=_('Type the address of your new location.'))
     formatted_address = CharField(max_length=200, help_text=_('The address as formatted by google maps geolocation.'))
-    description = CharField(max_length=300, blank=True, help_text=_('A description of this couch. How many people can you host? Is it a futon or a sofa?'))
+    description = CharField(max_length=150, blank=True, help_text=_('A description of this couch. How many people can you host? Is it a futon or a sofa?'))
 
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)

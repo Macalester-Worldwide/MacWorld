@@ -38,7 +38,7 @@
 				<ul class="list-unstyled">
 				{% for couch in couches_profile.couches.all %}
 
-				<li> <strong> <button type="button" class="btn btn-link popover-dismiss" data-toggle="popover" data-content="{{ couch.formatted_address }}">{{ couch.address }}</button> </strong> </li>
+				<li> <strong> <button type="button" class="btn btn-link popover-dismiss" data-toggle="popover" title="{{ couch.formatted_address }}" data-content="{{ couch.description }}">{{ couch.address }}</button> </strong> </li>
 				{% endfor %}
 				</ul>
 				{% if user = couches_profile %}
