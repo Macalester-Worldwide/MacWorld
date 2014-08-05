@@ -1,4 +1,4 @@
-from Couches.forms import CouchForm, ProfileForm, UserContactForm
+from Couches.forms import CouchForm, ProfileForm, UserContactForm, CouchSearchForm
 from Couches.models import User, Couch
 from django.core.urlresolvers import reverse_lazy
 from django.core.mail import EmailMessage
@@ -10,7 +10,6 @@ from guardian.mixins import PermissionRequiredMixin as PermReq, LoginRequiredMix
 from guardian.shortcuts import assign_perm, remove_perm
 from django.contrib import messages
 from allauth.account.decorators import verified_email_required
-from django.db.models.query import QuerySet
 
 
 class CouchesHomeView(LoginReq, ListView):
@@ -26,37 +25,44 @@ class CouchDetailView(LoginReq, DetailView):
     context_object_name = 'couch'
 
 
-'''
 class CouchSearchRedirect(FormView):
     form_class = CouchSearchForm
+    template_name = 'couch/search.html'
+
 
     def form_valid(self, form):
-        return redirect(reverse_lazy('couches:couch.search'))
-'''
+        clean_data = form.cleaned_data
+        return redirect(
+            reverse_lazy(
+                'couches:couch.search',
+                kwargs={
+                    'latitude': clean_data['latitude'],
+                    'longitude': clean_data['longitude'],
+                    'address': clean_data['address'],
+                    #'tolerance': clean_data['tolerance'],
+                }
+            )
+        )
+
 
 class CouchSearchView(LoginReq, ListView):
     model = Couch
-    template_name = 'couch/search.html'
+    template_name = 'couch/search_results.html'
     context_object_name = 'couches'
+    DEFAULT_TOLERANCE = 0.5
 
     def get_queryset(self):
         latitude = float(self.kwargs['latitude'])
         longitude = float(self.kwargs['longitude'])
-        latitude_tolerance, longitude_tolerance = 0.0, 0.0
-        resultsQuerySet = None
-        while resultsQuerySet is None or resultsQuerySet.count() == 0:
-            latitude_tolerance += 10.0
-            longitude_tolerance += 10.0
-            latitude_range = (latitude - latitude_tolerance, latitude + latitude_tolerance)
-            longitude_range = (longitude - longitude_tolerance, longitude + longitude_tolerance)
-            resultsQuerySet = Couch.objects.filter(latitude__range = latitude_range, longitude__range = longitude_range)
-        return resultsQuerySet
+        tolerance = self.DEFAULT_TOLERANCE if not self.kwargs['tolerance'] else float(self.kwargs['tolerance'].strip('/'))
+        latitude_range = (latitude - tolerance, latitude + tolerance)
+        longitude_range = (longitude - tolerance, longitude + tolerance)
+        return Couch.objects.filter(latitude__range=latitude_range, longitude__range=longitude_range)
 
     def get_context_data(self, **kwargs):
         context_data = super(CouchSearchView, self).get_context_data(**kwargs)
-        context_data.update({'address': self.kwargs['address']})
+        context_data.update({'address': self.kwargs['address'].strip('/')})
         return context_data
-
 
 
 class CouchCreateView(LoginReq, CreateView):

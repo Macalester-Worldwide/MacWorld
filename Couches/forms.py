@@ -25,12 +25,20 @@ class ProfileForm(ModelForm):
         if 'username' in self.fields: # If username is one of the fields, it is because it is the signup form. Therefore, chang the order of the fields
             self.fields.keyOrder = ['username', 'email', 'name', 'password1', 'password2', 'graduation_year', 'profile_picture','description', 'contact_information' ]            
 
+
 class CouchForm(ModelForm):
     class Meta:
         model = Couch
         exclude = ['owner']
         widgets = {'latitude': HiddenInput, 'longitude': HiddenInput, 'formatted_address': HiddenInput,
                    'address': TextInput(attrs={'class': 'form-control', })}
+
+
+class CouchSearchForm(ModelForm):
+    class Meta:
+        model = Couch
+        fields = ['address', 'latitude', 'longitude']
+    tolerance = FloatField(required=False)
 
 
 class UserContactForm(Form):
