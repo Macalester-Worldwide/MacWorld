@@ -50,6 +50,15 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
     </script>
     <script type="text/javascript">
+        {% if user.is_authenticated %}
+            geocoder = new google.maps.Geocoder();
+
+            function search(text){
+                window.location.replace("http://stackoverflow.com");
+            }
+            
+        {% endif %}
+
         function initialize() {
 
             var mapStyles = [
