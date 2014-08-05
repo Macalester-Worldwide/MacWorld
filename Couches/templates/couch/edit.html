@@ -22,7 +22,7 @@
                     mapOptions);
 
             {% comment %} Geocoder used to locate addresses in the map {% endcomment %}
-            geocoder = new google.maps.Geocoder();
+            var geocoder = new google.maps.Geocoder();
 
             {% comment %} Delay that will be used in the function to request address {% endcomment %}
             var delay = (function(){

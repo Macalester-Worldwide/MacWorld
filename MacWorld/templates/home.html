@@ -16,10 +16,17 @@
                 <input class="btn btn-primary navbar-btn" type="submit" value="Sign up to host and find hosts">
             </form>
         {% else %}
+
+        <form method="post" id="search-location">
             <div class="input-group">
                 <span class="input-group-addon">Search for couches:</span>
-                <input type="text" class="form-control" placeholder="Location">
+                {{ form.address }}
+                {{ form.latitude }}
+                {{ form.longitude }}
             </div>
+            <input style="display: none;" type="submit" value="{% trans 'Search' %}" v>
+            {% csrf_token %}
+        </form>
         {% endif %}
     </div>
 
@@ -50,16 +57,38 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
     </script>
     <script type="text/javascript">
-        {% if user.is_authenticated %}
-            geocoder = new google.maps.Geocoder();
-
-            function search(text){
-                window.location.replace("http://stackoverflow.com");
-            }
-            
-        {% endif %}
 
         function initialize() {
+
+            {% if user.is_authenticated %}
+
+                var geocoder = new google.maps.Geocoder();
+
+                $("#search-location").submit(function(event) {
+                     if(!$(this).data("geocodeset")){
+                        findLatLong();              
+                        return false;
+                     }
+                });
+
+                function findLatLong() {
+                    var $form = $("#search-location");
+                    var myAddress    = $('#id_address').val();
+
+                    geocoder.geocode(
+                        {address: myAddress}, 
+                        function(result,status) {
+                            var myLat = result[0].geometry.location.lat();
+                            var myLng = result[0].geometry.location.lng();
+                            $('#id_latitude').val(myLat);
+                            $('#id_longitude').val(myLng);
+                            $form.data("geocodeset", true).submit(); 
+                        }
+                    );
+
+                }
+
+            {% endif %}
 
             var mapStyles = [
                 {

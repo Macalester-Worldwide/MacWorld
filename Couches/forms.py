@@ -38,7 +38,9 @@ class CouchSearchForm(ModelForm):
     class Meta:
         model = Couch
         fields = ['address', 'latitude', 'longitude']
-    tolerance = FloatField(required=False)
+        widgets = {'address': TextInput(attrs={'class': 'form-control', 'placeholder' : _('Type an address here')}), 
+        'latitude' : HiddenInput, 'longitude' : HiddenInput
+        }
 
 
 class UserContactForm(Form):
