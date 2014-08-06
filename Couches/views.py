@@ -49,32 +49,25 @@ class CouchSearchView(LoginReq, ListView):
     model = Couch
     template_name = 'couch/search_results.html'
     context_object_name = 'couches'
-    DEFAULT_TOLERANCE = 0.5
+    INCREMENT = 0.5
 
     def get_queryset(self):
-        latitude = float(self.kwargs['latitude'])
-        longitude = float(self.kwargs['longitude'])
-        tolerance = self.DEFAULT_TOLERANCE if not self.kwargs['tolerance'] else float(self.kwargs['tolerance'].strip('/'))
-        minLat = latitude
-        maxLat = latitude
-        minLon = longitude
-        maxLon = longitude
-        resultsQuerySet = None
-        while (
-            (resultsQuerySet is None) or 
-            (resultsQuerySet.count() == 0 and (
-                (minLat > -85.0 and maxLat < 85.0) and 
-                (minLon > -180.0 and maxLon < 180.0)
-                )
-            )):
-            minLat -= tolerance
-            maxLat += tolerance
-            minLon -= tolerance
-            maxLon += tolerance
-            latitude_range = (minLat, maxLat)
-            longitude_range = (minLon, maxLon)
-            resultsQuerySet = Couch.objects.filter(latitude__range=latitude_range, longitude__range=longitude_range)
-        return resultsQuerySet
+        latitude, longitude = float(self.kwargs['latitude']), float(self.kwargs['longitude'])
+        increment = self.INCREMENT
+        min_latitude, max_latitude = (latitude,) * 2
+        min_longitude, max_longitude = (longitude,) * 2
+        results = []
+        while len(results) == 0:
+            if min_latitude < -85.0 or max_latitude > 85.0 or min_longitude < -180.0 or max_longitude > 180.0:
+                break
+            min_latitude -= increment
+            max_latitude += increment
+            min_longitude -= increment
+            max_longitude += increment
+            latitude_range = (min_latitude, max_latitude)
+            longitude_range = (min_longitude, max_longitude)
+            results = Couch.objects.filter(latitude__range=latitude_range, longitude__range=longitude_range)
+        return results
 
     def get_context_data(self, **kwargs):
         context_data = super(CouchSearchView, self).get_context_data(**kwargs)
@@ -109,6 +102,7 @@ class CouchUpdateView(LoginReq, PermReq, UpdateView):
         context_data = super(CouchUpdateView, self).get_context_data(**kwargs)
         context_data.update({'couch': self.object})
         return context_data
+
     def get_success_url(self):
         return reverse_lazy('couches:profile.detail', kwargs={'username': self.request.user.username})
 
