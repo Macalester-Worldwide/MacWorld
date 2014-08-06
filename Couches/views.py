@@ -12,19 +12,6 @@ from django.contrib import messages
 from allauth.account.decorators import verified_email_required
 
 
-class CouchesHomeView(LoginReq, ListView):
-    model = Couch
-    paginate_by = 10
-    template_name = 'couch/list.html'
-    context_object_name = 'couches'
-
-
-class CouchDetailView(LoginReq, DetailView):
-    model = Couch
-    template_name = 'couch/detail.html'
-    context_object_name = 'couch'
-
-
 class CouchSearchRedirect(FormView):
     form_class = CouchSearchForm
     template_name = 'couch/search.html'
