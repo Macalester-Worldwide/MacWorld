@@ -42,8 +42,8 @@
                     <h3> Addresses </h3>
                     <ul class="list-unstyled">
                         {% for couch in couches_profile.couches.all %}
-
-                            <li> <strong> <button type="button" class="btn btn-link popover-dismiss" data-toggle="popover" data-content="{{ couch.formatted_address }}">{{ couch.address }}</button> </strong> </li>
+                            {% get_obj_perms user for couch as 'user_couch_perms' %}
+                            <li> <strong> <button type="button" class="btn btn-link popover-dismiss" data-toggle="popover" data-content="{{ couch.formatted_address }}">{{ couch.address }}</button> </strong> {% if 'change_couch' in user_couch_perms %}<a href="{% url 'couches:couch.update' pk=couch.pk %}">Edit</a>{% endif %} </li>
                         {% endfor %}
                     </ul>
                     {% if user = couches_profile %}
