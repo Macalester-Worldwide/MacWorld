@@ -23,7 +23,6 @@ class HomeView(FormView):
                     'latitude': clean_data['latitude'],
                     'longitude': clean_data['longitude'],
                     'address': clean_data['address'],
-                    #'tolerance': clean_data['tolerance'],
                 }
             )
         )
