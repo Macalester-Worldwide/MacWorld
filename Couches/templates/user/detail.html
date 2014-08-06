@@ -5,7 +5,6 @@
 {% load staticfiles %}
 
 {% load guardian_tags %}
-{% get_obj_perms user for couches_profile as 'user_profile_perms' %}
 
 {% block content %}
 
@@ -16,7 +15,8 @@
 				<h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
 			</div>
 			<div class="col-md-4 text-right">
-				{% if 'Couches.change_user' in user_profile_perms %}
+                {% get_obj_perms user for couches_profile as 'user_profile_perms' %}
+				{% if 'change_user' in user_profile_perms %}
 				<a class="btn btn-primary" href="{% url 'couches:profile.update' couches_profile.username %}"> <img src="{% static 'images/user_edit.png' %}" /> Edit your profile </a>
 				{% else %}
 				<a class="btn btn-info" href="{% url 'couches:profile.email' couches_profile.username %}" > <img src="{% static 'images/email_go.png' %}" /> Send an e-mail </a>
