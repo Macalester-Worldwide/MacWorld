@@ -5,6 +5,8 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+
+{% load thumbnail %}
     <div id="homepage-map">
     </div>
 
@@ -127,7 +129,20 @@
                     mapOptions);
 
             {% for couch in couches %}
+
+                {% if couch.owner.profile_picture %}
+                    var image{{ forloop.counter }} = {
+                        url: '{% thumbnail couch.owner.profile_picture 30x30 crop %}'
+                    };
+                {% endif %}
+
                 var couch{{ forloop.counter }} = new google.maps.Marker({
+                    {% if couch.owner.profile_picture %}
+
+                        icon: image{{ forloop.counter }},
+
+                    {% endif %}
+
                     position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
                     map: map,
                     url: "{{ couch.owner.get_absolute_url }}",

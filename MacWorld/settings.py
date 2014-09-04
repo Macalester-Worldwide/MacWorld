@@ -63,7 +63,14 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'Couches',
+    'easy_thumbnails',
 )
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'avatar': {'size': (20, 20), 'crop': True},
+    },
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
