@@ -27,7 +27,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         'Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'))
     date_joined = DateTimeField(_('date joined'), auto_now_add=True)
 
-    profile_picture = ImageField(_('picture of user'), null=True, blank=True, upload_to='Couches/static/profile_pictures/')
+    profile_picture = ImageField(_('picture of user'), null=True, blank=True, upload_to='Couches/media/profile_pictures/')
     contact_information = CharField(max_length=300, help_text=_('How can others contact you?'))
     description = CharField(max_length=500, help_text=_('Tell us a bit more about yourself.'))
     graduation_year = IntegerField(null=True, choices=GRADUATION_YEAR_CHOICES)
