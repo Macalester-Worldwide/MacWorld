@@ -1,8 +1,9 @@
-from django.views.generic import TemplateView, FormView
+from django.views.generic import FormView
 from Couches.models import Couch
 from Couches.forms import CouchSearchForm
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse_lazy
+
 
 class HomeView(FormView):
     template_name = 'home.html'

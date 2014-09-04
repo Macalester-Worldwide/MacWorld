@@ -4,149 +4,154 @@
 
 {% load staticfiles %}
 
+{% load guardian_tags %}
+
 {% block content %}
 
-<div class="container">
+    {% get_obj_perms user for couches_profile as 'user_profile_perms' %}
 
-	<div class="row page-header">
-			<div class="col-md-8">
-				<h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
-			</div>
-			<div class="col-md-4 text-right">
-				{% if user == couches_profile %}
-				<a class="btn btn-primary" href="{% url 'couches:profile.update' couches_profile.username %}"> <img src="{% static 'images/user_edit.png' %}" /> Edit your profile </a>
-				{% else %}
-				<a class="btn btn-info" href="{% url 'couches:profile.email' couches_profile.username %}" > <img src="{% static 'images/email_go.png' %}" /> Send an e-mail </a>
-				{% endif %}
-			</div>
-	</div>
-	{% if couches_profile.description %}
-	<div class="row">
-		<p class="lead">
-			{{ couches_profile.description }}
-		</p>
-	</div>
-	{% endif %}
-	<div class="row">
-	{% if couches_profile.couches.all %}
-		<div class="col-md-6" id="map-container">
-			<div id="profile-map">
-			</div>
-		</div>
-		<div class="col-md-6" id="addresses-container">
-				<h3> Addresses </h3>
-				<ul class="list-unstyled">
-				{% for couch in couches_profile.couches.all %}
+    <div class="container">
 
-				<li> <strong> <button type="button" class="btn btn-link popover-dismiss" data-toggle="popover" title="{{ couch.formatted_address }}" data-content="{{ couch.description }}">{{ couch.address }}</button> </strong> </li>
-				{% endfor %}
-				</ul>
-				{% if user = couches_profile %}
-					<a class="btn btn-default" href="{% url 'couches:couch.create' %}" >
-					<img src="{% static 'images/add.png' %}"/> Add a new couch </a>
-				{% endif %}
-		</div>
-	{% else %}
-		{% if user = couches_profile %}
-			<div class="col-md-8">
-				<p class="alert alert-danger"> <strong> Oops! You have added no couches. </strong> Please add a couch so that people can find you. </p>
-			</div>
-			<div class="col-md-4">
-				<a class="btn btn-default" href="{% url 'couches:couch.create' %}" >
-				<img src="{% static 'images/add.png' %}"/> Add a new couch </a>
-			</div>
-		{% else %}
-			<div class="col-md-12">
-					<p class="alert alert-warning"> This user has added no couches. </p>
-			</div>
-		{% endif %}
-	{% endif %}
+        <div class="row page-header">
+            <div class="col-md-8">
+                <h1> {{ couches_profile.get_best_identifier }} <small> Class of {{ couches_profile.graduation_year }} </small> </h1>
+            </div>
+            <div class="col-md-4 text-right">
 
-	</div>
-	<div class="row">
-		{% if couches_profile.contact_information %}
-			<div class="col-md-6">
-				<h3>   Contact Information <img src="{% static 'images/vcard.png' %}"/> </h3>
-				<p> 
-				{{ couches_profile.contact_information }}
-				</p>
-			</div>
-		{% endif %}
-		<div class="col-md-6">
-			{% if couches_profile.email_visible %}
-			<h3>   E-mail <img src="{% static 'images/email.png' %}"/> </h3>
-			<p> <a href="mailto:{{ couches_profile.email }}"> {{ couches_profile.email }} </a> </p>
-			{% endif %}
-		</div>
-	</div>
-	{% if user = couches_profile %}
-		<div class="row text-center" id="account-edit">
-				<ul class="list-inline">
-					<li> <strong> <small> Account Settings: </small> </strong> </li>
-		        	<li><small> <a href="{% url 'account_change_password' %}">{% trans 'Change password' %}</a></small></li>
-		        	<li><small> <a href="{% url 'account_email' %}">{% trans 'Configure email' %}</a></small></li>
-		        	<li><small> <a href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a></small></li>
-		    	</ul>
-		</div>
-	{% endif %}
-</div>
-	{% if couches_profile.couches.all %}
-	<script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
-    </script>
-    <script type="text/javascript">
+                {% if 'change_user' in user_profile_perms %}
+                    <a class="btn btn-primary" href="{% url 'couches:profile.update' couches_profile.username %}"> <img src="{% static 'images/user_edit.png' %}" /> Edit your profile </a>
+                {% else %}
+                    <a class="btn btn-info" href="{% url 'couches:profile.email' couches_profile.username %}" > <img src="{% static 'images/email_go.png' %}" /> Send an e-mail </a>
+                {% endif %}
+            </div>
+        </div>
+        {% if couches_profile.description %}
+            <div class="row">
+                <p class="lead">
+                    {{ couches_profile.description }}
+                </p>
+            </div>
+        {% endif %}
+        <div class="row">
+            {% if couches_profile.couches.all %}
+                <div class="col-md-6" id="map-container">
+                    <div id="profile-map">
+                    </div>
+                </div>
+                <div class="col-md-6" id="addresses-container">
+                    <h3> Addresses </h3>
+                    <ul class="list-unstyled">
+                        {% for couch in couches_profile.couches.all %}
+                            {% get_obj_perms user for couch as 'user_couch_perms' %}
+                            <li> <strong> <button type="button" class="btn btn-link popover-dismiss" data-toggle="popover" data-content="{{ couch.formatted_address }}">{{ couch.address }}</button> </strong> {% if 'change_couch' in user_couch_perms %}<a href="{% url 'couches:couch.update' pk=couch.pk %}">Edit</a>{% endif %} </li>
+                        {% endfor %}
+                    </ul>
+                    {% if user = couches_profile %}
+                        <a class="btn btn-default" href="{% url 'couches:couch.create' %}" >
+                            <img src="{% static 'images/add.png' %}"/> Add a new couch </a>
+                    {% endif %}
+                </div>
+            {% else %}
+                {% if user = couches_profile %}
+                    <div class="col-md-8">
+                        <p class="alert alert-danger"> <strong> Oops! You have added no couches. </strong> Please add a couch so that people can find you. </p>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-default" href="{% url 'couches:couch.create' %}" >
+                            <img src="{% static 'images/add.png' %}"/> Add a new couch </a>
+                    </div>
+                {% else %}
+                    <div class="col-md-12">
+                        <p class="alert alert-warning"> This user has added no couches. </p>
+                    </div>
+                {% endif %}
+            {% endif %}
 
-        function initialize() {
+        </div>
+        <div class="row">
+            {% if couches_profile.contact_information %}
+                <div class="col-md-6">
+                    <h3>   Contact Information <img src="{% static 'images/vcard.png' %}"/> </h3>
+                    <p>
+                        {{ couches_profile.contact_information }}
+                    </p>
+                </div>
+            {% endif %}
+            <div class="col-md-6">
+                {% if couches_profile.email_visible %}
+                    <h3>   E-mail <img src="{% static 'images/email.png' %}"/> </h3>
+                    <p> <a href="mailto:{{ couches_profile.email }}"> {{ couches_profile.email }} </a> </p>
+                {% endif %}
+            </div>
+        </div>
+        {% if user = couches_profile %}
+            <div class="row text-center" id="account-edit">
+                <ul class="list-inline">
+                    <li> <strong> <small> Account Settings: </small> </strong> </li>
+                    <li><small> <a href="{% url 'account_change_password' %}">{% trans 'Change password' %}</a></small></li>
+                    <li><small> <a href="{% url 'account_email' %}">{% trans 'Configure email' %}</a></small></li>
+                    <li><small> <a href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a></small></li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+    {% if couches_profile.couches.all %}
+        <script type="text/javascript"
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1cJ3PQ6l2bR5Xspx6Qg5ROAxmPLjL0CQ">
+        </script>
+        <script type="text/javascript">
 
-        	$('[data-toggle="popover"]').popover({trigger: 'focus'});
+            function initialize() {
 
-            var mapStyles = [
-                {
-                    "featureType": "water",
-                    "elementType": "geometry.fill"
-                },{
-                    "featureType": "landscape"
-                },{
-                    "elementType": "labels",
-                    "stylers": [
-                        { "visibility": "on" }
-                    ]
-                },{
-                    "featureType": "administrative",
-                    "stylers": [
-                        { "visibility": "off" }
-                    ]
-                }
-            ]
+                $('[data-toggle="popover"]').popover({trigger: 'focus'});
 
-            var mapOptions = {
-                center: new google.maps.LatLng(0, 0),
-                zoom: 1,
-                disableDefaultUI: true,
-                styles: mapStyles
-            };
-            var map = new google.maps.Map(document.getElementById("profile-map"),
-                    mapOptions);
+                var mapStyles = [
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry.fill"
+                    },{
+                        "featureType": "landscape"
+                    },{
+                        "elementType": "labels",
+                        "stylers": [
+                            { "visibility": "on" }
+                        ]
+                    },{
+                        "featureType": "administrative",
+                        "stylers": [
+                            { "visibility": "off" }
+                        ]
+                    }
+                ]
 
-            {% for couch in couches_profile.couches.all %}
-                var couch{{ forloop.counter }} = new google.maps.Marker({
-                    position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
-                    map: map,
-                    url: "{% url 'couches:couch.update' couch.pk %}",
-                    title:"Update this couch information"
-                });
+                var mapOptions = {
+                    center: new google.maps.LatLng(0, 0),
+                    zoom: 1,
+                    disableDefaultUI: true,
+                    styles: mapStyles
+                };
+                var map = new google.maps.Map(document.getElementById("profile-map"),
+                        mapOptions);
 
-                google.maps.event.addListener(couch{{ forloop.counter }}, 'click', function() {
-                    window.location.href = couch{{ forloop.counter }}.url;
-                });
+                {% for couch in couches_profile.couches.all %}
+                    var couch{{ forloop.counter }} = new google.maps.Marker({
+                        position: new google.maps.LatLng({{ couch.latitude }}, {{ couch.longitude }}),
+                        map: map,
+                        url: "{% url 'couches:couch.update' couch.pk %}",
+                        title:"Update this couch information"
+                    });
 
-            {% endfor %}
-        }
+                    google.maps.event.addListener(couch{{ forloop.counter }}, 'click', function() {
+                        window.location.href = couch{{ forloop.counter }}.url;
+                    });
 
-        google.maps.event.addDomListener(window, 'load', initialize);
+                {% endfor %}
+            }
 
-    </script>
+            google.maps.event.addDomListener(window, 'load', initialize);
 
-{% endif %}
+        </script>
+
+    {% endif %}
 
 {% endblock %}
