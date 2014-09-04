@@ -54,7 +54,7 @@ class Couch(Model):
     owner = ForeignKey(User, related_name='couches')
     longitude = FloatField()
     latitude = FloatField()
-    address = CharField(max_length=200, help_text=_('Type the address of your new location.'))
+    address = CharField(max_length=200, help_text=_('Where are you located? You can type your full address or only city you are located in.'))
     formatted_address = CharField(max_length=200, help_text=_('The address as formatted by google maps geolocation.'))
     description = CharField(max_length=150, blank=True, help_text=_('A description of this couch. How many people can you host? Is it a futon or a sofa?'))
 
